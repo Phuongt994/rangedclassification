@@ -1,0 +1,48 @@
+25.06.16
+
+1) Refactor all into 2 main Packages:
+
+- Elements: contain items
+    Classes: Attributes, Classes
+- Tools: contain methods
+    Classes: Analyser, DScanner
+
+Starter as Main()
+
+--- ** ---
+
+2) Current progress to analysing ranges:
+
+- Starter initialised, which initialises (tool) DScanner
+- DScanner initialised, which initialises (elements) Attributes & Classes
+- DScanner invokes (methods) MaxMin, MaxSum, MinThresh
+
+--- ** ---
+
+Random updates:
+1) Self-complication is when there are more classes than methods. Not. Good.
+2) Hello post-Brexit
+3) Missed a hackday.. tremendous guilt ensued
+
+
+-------------------------------------------------------------------------
+
+26.06.16
+
+1) Refactor:
+- Scrap Elements classes
+- DScanner kept ONLY for scanning, Analyser kept ONLY for analysing
+
+
+2) Current progress to analysing ranges:
+- Starter initialised, which initialises (tool) DScanner
+- DScanner initialised, which initialises (tool) Analyser
+- Analyser initialised, which invokes (method) minMax & maxSum & minThresh and (tool) Generator (IN PROGRESS)
+
+Random updates:
+1) Fewer classes now, although methods are crammed together
+2) Rocking chair is the best workstation hands down
+3) Cycling trail next week; 100% K.O.
+
+
+
