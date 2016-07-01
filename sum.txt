@@ -45,4 +45,23 @@ Random updates:
 3) Cycling trail next week; 100% K.O.
 
 
+-------------------------------------------------------------------------
 
+28.06.16
+1) Refactor:
+- Now 3 classes up: Scanners -> Sorter -> Analyser
+
+2) Current progress to analysing ranges:
+- Starter initialised, which initialises (tool) Scanners
+- Scanners initialised, which scans in tuples and mark them with class tags, pass both into newly initialised (tool) Sorter
+- Sorter initialised, which processes tuples with class tags into hashmap, pass hashmap onto newly intialised (tool) Analyser
+- Analyser initialised, which processes each tuples under maxMin() and maxSum() method (IN PROGRESS)
+
+3) Stuck-point:
+- Hashmap when passed as param could not return value and key as specified classes (String and List) but instead 'objects' (Object)
+--> EntrySet?
+
+Random updates:
+- Hashmap should return proper values?
+- London is too rainy
+- New room tomorrow at UCL hall should have more space for workstation now
