@@ -65,3 +65,23 @@ Random updates:
 - Hashmap should return proper values?
 - London is too rainy
 - New room tomorrow at UCL hall should have more space for workstation now
+
+-------------------------------------------------------------------------
+
+04.07.16
+1) Refactor:
+- Now 2 classes only: Scanners (merged with Sorter) -> Analyser
+- Reason: to have sorted data ready for analysis asap
+
+2) Current progress to analysing ranges:
+- MaxMin() has worked, however MaxSum() worked but need a copy of tuple list in order not to ruin original data
+
+3) Stuck-point
+- MaxSum() currently iterates through original HashMap and changes original data, which prevents new iteration from
+using the original values
+--> Need a copy of HashMap/LinkedList of original tuples with their ranges
+
+Random updates:
+- Cardiff-bound very soon
+- Need literature review -> SCONUL access to LSE lib
+- Keep track of hashMap; look up ADT 
