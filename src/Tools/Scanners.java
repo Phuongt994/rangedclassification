@@ -11,22 +11,23 @@ public class Scanners {
     private String dataDir;
     private Scanner scanner1, scanner2;
     private LinkedList<String> t;
-    private LinkedList<List> tuple;
+    private LinkedList<LinkedList> tuple;
     private HashSet<String> classes;
+    private HashMap<String, LinkedList<LinkedList>> classMap;
 
 
     public Scanners() {
-        tuple = new LinkedList<>();
-        classes = new HashSet<>();
-
-        // call process data method in this class
         processData();
-
     }
 
     private void processData() {
         // specify data directory
         dataDir = "iris.csv";
+
+        //initialise tuple list and class set
+        tuple = new LinkedList<>();
+        classes = new HashSet<>();
+
         // scanner to read data
         // read each line
         // use delimiter to separate items and append to a tuple
@@ -54,20 +55,54 @@ public class Scanners {
                     tuple.get(i).set(j, Float.parseFloat(tuple.get(i).get(j).toString()));
                 }
             }
+
+            sortData();
+
             scanner1.close();
             scanner2.close();
 
             reportScan();
+            // Pass hashmap into Analyser?
+            new Analyser(tuple, classMap);
+
             // pass tuple and class tags to analyser
-            new Sorter(tuple, classes);
+            // new Sorter(tuple, classes);
         }
         catch (FileNotFoundException fe) {
             System.out.println(fe);
         }  
     }
 
+    private void sortData() {
+        // make a HashMap for class tags and (processed) tuples
+        // initialise HashMap
+        classMap = new HashMap<>();
+
+        classes.stream().forEach(c -> {
+            classMap.put(c, null);
+        });
+
+        // for each class as key in Map
+        classMap.keySet().stream().forEach(k -> {
+            LinkedList temp = new LinkedList<List>();
+            // for each tuple
+            for (int i = 0; i < tuple.size(); i++) {
+//                int order = i;
+                // if tuple's class == class name
+                // add to temp tuple list
+                if (tuple.get(i).get(5).equals(k)) {
+                    temp.add(tuple.get(i));
+                }
+                // append temp list to relevant class key in Map
+                classMap.put(k, temp);
+            }
+        });
+    }
+
     private void reportScan() {
         System.out.println("Scanner started \nTuple list ready: " + tuple);
         System.out.println("Class list ready: " + classes);
+        System.out.println("Hashmap ready: " + classMap.entrySet());
     }
+
 }
