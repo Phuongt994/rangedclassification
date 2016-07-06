@@ -9,21 +9,12 @@
 
 Starter as Main()
 
---- ** ---
 
 2) Current progress to analysing ranges:
 
 - Starter initialised, which initialises (tool) DScanner
 - DScanner initialised, which initialises (elements) Attributes & Classes
 - DScanner invokes (methods) MaxMin, MaxSum, MinThresh
-
---- ** ---
-
-Random updates:
-1) Self-complication is when there are more classes than methods. Not. Good.
-2) Hello post-Brexit
-3) Missed a hackday.. tremendous guilt ensued
-
 
 -------------------------------------------------------------------------
 
@@ -38,12 +29,6 @@ Random updates:
 - Starter initialised, which initialises (tool) DScanner
 - DScanner initialised, which initialises (tool) Analyser
 - Analyser initialised, which invokes (method) minMax & maxSum & minThresh and (tool) Generator (IN PROGRESS)
-
-Random updates:
-1) Fewer classes now, although methods are crammed together
-2) Rocking chair is the best workstation hands down
-3) Cycling trail next week; 100% K.O.
-
 
 -------------------------------------------------------------------------
 
@@ -61,11 +46,6 @@ Random updates:
 - Hashmap when passed as param could not return value and key as specified classes (String and List) but instead 'objects' (Object)
 --> EntrySet?
 
-Random updates:
-- Hashmap should return proper values?
-- London is too rainy
-- New room tomorrow at UCL hall should have more space for workstation now
-
 -------------------------------------------------------------------------
 
 04.07.16
@@ -80,8 +60,3 @@ Random updates:
 - MaxSum() currently iterates through original HashMap and changes original data, which prevents new iteration from
 using the original values
 --> Need a copy of HashMap/LinkedList of original tuples with their ranges
-
-Random updates:
-- Cardiff-bound very soon
-- Need literature review -> SCONUL access to LSE lib
-- Keep track of hashMap; look up ADT 
