@@ -89,7 +89,6 @@ public class Analyser {
 
             Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo+1)).compareTo((Float) b.get(attrNo+1));
             tempMap.get(keyObj).sort(comp);
-            tempMap.put((Float[]) keyObj, tempMap.get(keyObj));
 
             System.out.println("Sorted map by attr no. : " + (attrNo+1) + "||| "  + tempMap);
             tempMap.get(keyObj).stream().forEach(tuple -> {
