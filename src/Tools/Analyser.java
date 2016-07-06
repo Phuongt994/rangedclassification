@@ -17,7 +17,6 @@ public class Analyser {
         this.tuple = tuple;
         this.classMap = new HashMap<>(classMap);
 
-//        this.classMap=(HashMap)classMap.clone();
         maxMin(this.classMap);
     }
 
@@ -40,7 +39,7 @@ public class Analyser {
                 map.get(k).stream().forEach(t -> {
                     attrVal.add(t.get(order));
                 });
-
+                System.out.println("------------------------");
                 System.out.println("Class " + k + " : " + "List of attr number " + i + " : " + attrVal);
                 attrCount++;
 
@@ -60,73 +59,84 @@ public class Analyser {
                     }
                 });
 
-                // include class tag with tuple list NOT RELEVANT
-                // tupleAList.add(0, k);
+                System.out.println("TupleAList in hashMap: " + tupleAList);
 
                 // append into hashmap!
                 attrSorted.put(attrRange, tupleAList);
             }
             System.out.println("Attr count : " + attrCount);
-            maxSum(classTag, attrSorted);
+            biConvert(classTag, attrSorted);
         });
     }
 
-    private void maxSum(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap) {
-        /***
-         * DOES NOT WORK YET
-         */
+    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap) {
         System.out.println("---------------------------------");
         System.out.println("For class " + classTag);
-
         // 1 or -1 transform of class in each tuple
-        attrMap.keySet().stream().forEach(cr -> {
-            attrMap.get(cr).stream().forEach(tuple -> {
-                System.out.println(tuple.get(tuple.size() -1));
+
+        // create a clone hashmap to avoid editing the original version
+        LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(attrMap);
+        // create a temp binary list
+        LinkedList biTuple = new LinkedList<Integer>();
+
+        List keys = new ArrayList(tempMap.keySet());
+        for (int i = 0; i < keys.size(); i++) {
+            int attrNo = i;
+
+            // to control which attribute number it is (using i)
+            Object keyObj = keys.get(attrNo);
+
+
+            Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo+1)).compareTo((Float) b.get(attrNo+1));
+            tempMap.get(keyObj).sort(comp);
+            tempMap.put((Float[]) keyObj, tempMap.get(keyObj));
+
+            System.out.println("Sorted map by attr no. : " + (attrNo+1) + "||| "  + tempMap);
+            tempMap.get(keyObj).stream().forEach(tuple -> {
+                // append 1 and -1 into an array for max sum solution
                 if (tuple.get(tuple.size() - 1).equals(classTag)) {
-                    tuple.set(tuple.size() - 1, 1);
+                    biTuple.add(1);
                 } else {
-                    tuple.set(tuple.size() - 1, -1);
+                    biTuple.add(-1);
                 }
             });
-
-            // append 1 and -1 into an array for max sum solution
-            LinkedList biTuple = new LinkedList<Integer>();
-            attrMap.get(cr).stream().forEach(tuple -> {
-                biTuple.add(tuple.get(tuple.size() -1));
-            });
-            System.out.println(biTuple);
-        });
-
-
-
-
+            System.out.println("Converted binary list: " + biTuple);
+            maxSum(biTuple);
+        };
     }
 
-//            System.out.print("For class: " + attrMap.get(k).get(0));
-//            System.out.println(" range is : " + k[0] + " " + k[1]);
-//
-//            // cannot use stream() since starting point = 1 (ignore class tag)
-//            for (int i = 1; i < attrMap.get(k).size(); i++) {
-//                String classTag = (String) attrMap.get(k).get(i).get(attrMap.get(k).get(i).size() - 1);
-//                if (classTag.equals(k)) {
-//                    attrMap.get(k).get(i).set(attrMap.get(k).get(i).size() - 1, "1");
-//                } else {
-//                    attrMap.get(k).get(i).set(attrMap.get(k).get(i).size() - 1, "-1");
-//                }
-//            }
-//            System.out.println("Class " + attrMap.get(k).get(0) + " tuple after fix " + attrMap.get(k));
-//        });
+    /***
+     * Altered max sum with iteration and additional decremental limit (NOT YET APPLIED)
+     * Original method from Kadane's algorithm
+     * @param biList a list of 1 or -1 for max sum calculation
+     */
+    private void maxSum(LinkedList<Integer> biList) {
+        System.out.println("Size of biList: " + biList.size());
+        int curMax = -1;
+        int finMax = -1;
+        int posCurStart = 0;
+        int[] posTracker = {0, posCurStart};
 
+        for (int i = 0; i < biList.size() - 1; i++) {
+            curMax+= biList.get(i);
+            if (curMax > finMax) {
+                finMax = curMax;
+                posTracker[0] = posCurStart;
+                posTracker[1] = i;
+            } else if (curMax < -1) {
+                curMax = -1;
+                posCurStart = i+1;
+            }
+        }
+        System.out.println("Max Sum is : " + finMax);
+        System.out.println("Positions of array: " + posTracker[0] + " " + posTracker[1]);
+    }
 
-//                tupleList.stream().forEach(tuple -> {
-//                    if (tuple.get(tuple.size() - 1).toString().equals(k)) {
-//                        tuple.set(tuple.size() - 1, 1);
-//                    } else {
-//                        tuple.set(tuple.size() - 1, -1);
-//                    }
-//                });
-//            });
-//
-//            System.out.println("Tuple post-fix: " + attrMap.get(k));
-
+    /***
+     * Check for support & confidence (then density)
+     *
+     */
+    private void minThresh() {
+        
+    }
 }
