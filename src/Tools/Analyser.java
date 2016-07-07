@@ -76,32 +76,45 @@ public class Analyser {
 
         // create a clone hashmap to avoid editing the original version
         LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(attrMap);
-        // create a temp binary list
-        LinkedList biTuple = new LinkedList<Integer>();
+
 
         List keys = new ArrayList(tempMap.keySet());
-        for (int i = 0; i < keys.size(); i++) {
-            int attrNo = i;
+        for (int i = 0; i < 1; i++) {
+
+            // int attrNo = i+1;
 
             // to control which attribute number it is (using i)
-            Object keyObj = keys.get(attrNo);
+            // Object keyObj = keys.get(i);
 
+            // Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo+1)).compareTo((Float) b.get(attrNo+1));
+            // tempMap.get(keyObj).sort(Comparator.comparing(t -> (Float) t.get(attrNo)));
+            for (int j = 1; j < 5; j++) {
+                int keyOrd = j-1;
+                Object keyObj = keys.get(keyOrd);
+                // create a temp binary list
+                LinkedList biTuple = new LinkedList<Integer>();
+                int order = j;
 
-            Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo+1)).compareTo((Float) b.get(attrNo+1));
-            tempMap.get(keyObj).sort(comp);
+                LinkedList<LinkedList> tempL = new LinkedList<>(tempMap.get(keyObj));
+                tempL.sort(Comparator.comparing(t -> (Float) t.get(order)));
+                tempMap.put((Float[]) keyObj, tempL);
 
-            System.out.println("Sorted map by attr no. : " + (attrNo+1) + "||| "  + tempMap);
-            tempMap.get(keyObj).stream().forEach(tuple -> {
-                // append 1 and -1 into an array for max sum solution
-                if (tuple.get(tuple.size() - 1).equals(classTag)) {
-                    biTuple.add(1);
-                } else {
-                    biTuple.add(-1);
-                }
-            });
-            System.out.println("Converted binary list: " + biTuple);
-            maxSum(biTuple);
-        };
+                System.out.println("Sorted map by attr no. : " + j + "||| " + tempL);
+
+//                tempL.stream().forEach(tuple -> {
+//
+//                    // append 1 and -1 into an array for max sum solution
+//                    if (tuple.get(tuple.size() - 1).equals(classTag)) {
+//                        biTuple.add(1);
+//                    } else {
+//                        biTuple.add(-1);
+//                    }
+//                });
+//                System.out.println("Converted binary list: " + biTuple);
+//                maxSum(biTuple);
+            };
+            System.out.println("Map entries: " + tempMap.entrySet());
+        }
     }
 
     /***
