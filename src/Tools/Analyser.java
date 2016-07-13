@@ -11,6 +11,7 @@ public class Analyser {
     // LinkedHashMap to preserve order of insertion
     private LinkedHashMap<Float[], LinkedList<LinkedList>> attrSorted;
     private LinkedList attrVal;
+    private LinkedHashMap<Integer, Float[]> LR;
 
     public Analyser(LinkedList<LinkedList> tuple, HashMap classMap) {
         this.tuple = new LinkedList<>();
@@ -40,7 +41,7 @@ public class Analyser {
                     attrVal.add(t.get(order));
                 });
                 System.out.println("------------------------");
-                System.out.println("Class " + k + " : " + "List of attr number " + i + " : " + attrVal);
+                System.out.println("For class " + k + " : " + "List of attr number " + i + " : " + attrVal);
                 attrCount++;
 
                 // use sort() to get max and min value of range
@@ -65,33 +66,40 @@ public class Analyser {
                 attrSorted.put(attrRange, tupleAList);
             }
             System.out.println("Attr count : " + attrCount);
-            biConvert(classTag, attrSorted);
+            // create long range holder
+            LinkedHashMap LR = new LinkedHashMap<>();
+            biConvert(classTag, attrSorted, LR);
+            System.out.println("Done 1 class - sending to generator\n");
+            // LR as param
+            // CALL GENERATOR INSTANCE HERE
         });
     }
 
-    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap) {
+    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap, LinkedHashMap<Integer, Float[]> LR) {
         System.out.println("---------------------------------");
         System.out.println("For class " + classTag);
         // 1 or -1 transform of class in each tuple
 
         // create a clone hashmap to avoid editing the original version
         LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(attrMap);
-        // create a temp binary list
-        LinkedList biTuple = new LinkedList<Integer>();
+
 
         List keys = new ArrayList(tempMap.keySet());
         for (int i = 0; i < keys.size(); i++) {
             int attrNo = i;
 
             // to control which attribute number it is (using i)
-            Object keyObj = keys.get(attrNo);
+            Object keyObj = keys.get(i);
 
 
             Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo+1)).compareTo((Float) b.get(attrNo+1));
             tempMap.get(keyObj).sort(comp);
             tempMap.put((Float[]) keyObj, tempMap.get(keyObj));
 
-            System.out.println("Sorted map by attr no. : " + (attrNo+1) + "||| "  + tempMap);
+            System.out.println("Sorted map by attr no. : " + (attrNo+1) + "||| "  + tempMap.get(keyObj));
+
+            // create a temp binary list
+            LinkedList biTuple = new LinkedList<Integer>();
             tempMap.get(keyObj).stream().forEach(tuple -> {
                 // append 1 and -1 into an array for max sum solution
                 if (tuple.get(tuple.size() - 1).equals(classTag)) {
@@ -100,17 +108,18 @@ public class Analyser {
                     biTuple.add(-1);
                 }
             });
+
             System.out.println("Converted binary list: " + biTuple);
-            maxSum(biTuple);
+            maxSum(keyObj, tempMap, attrNo, biTuple, LR);
         };
     }
 
-    /***
+    /**
      * Altered max sum with iteration and additional decremental limit (NOT YET APPLIED)
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    private void maxSum(LinkedList<Integer> biList) {
+    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<Integer> biList, LinkedHashMap<Integer, Float[]> LR) {
         System.out.println("Size of biList: " + biList.size());
         int curMax = -1;
         int finMax = -1;
@@ -130,13 +139,34 @@ public class Analyser {
         }
         System.out.println("Max Sum is : " + finMax);
         System.out.println("Positions of array: " + posTracker[0] + " " + posTracker[1]);
+        addCRange(key, map, attr, posTracker, biList, LR);
+    }
+
+    private void addCRange(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, int[] indRange, LinkedList<Integer> biList, LinkedHashMap<Integer, Float[]> LR) {
+        // after maxsum called
+        Float[] cRange = new Float[2];
+        cRange[0] = (Float) map.get(key).get(indRange[0]).get(attr+1);
+        cRange[1] = (Float) map.get(key).get(indRange[1]).get(attr+1);
+
+        System.out.println("Range after maxsum: " + cRange[0] + " " + cRange[1]);
+        minThresh(biList, cRange, indRange, LR, attr);
     }
 
     /***
      * Check for support & confidence (then density)
      *
      */
-    private void minThresh() {
-        
+    private void minThresh(LinkedList<Integer> biList, Float[] cRange, int[] indRange, LinkedHashMap<Integer, Float[]> LR, int attr) {
+        float support =(float) (indRange[1] - indRange[0]) / biList.size();
+        System.out.println("Support: " + support);
+
+        System.out.println("Confidence: " + 1 + " ?" + "\n-------------------");
+
+        // suppose support > 60%
+        // NEED CHECK FOR DENSITY
+        LR.put(attr, cRange);
     }
+
+
+
 }
