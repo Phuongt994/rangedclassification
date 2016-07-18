@@ -60,3 +60,20 @@ Starter as Main()
 - MaxSum() currently iterates through original HashMap and changes original data, which prevents new iteration from
 using the original values
 --> Need a copy of HashMap/LinkedList of original tuples with their ranges
+
+
+-------------------------------------------------------------------------
+
+13.07.16
+1) Refactor:
+- new Generator (empty)
+
+2) Current progress to analysing ranges
+- maxSum() works only in 1 iteration
+---> recursive loop?
+---> rule: start with positive and contains only 40% negative?
+
+3) Stuck-point
+- Recursive loop may only start as second loop
+- Control support from loop -> minThresh() only checks density? How to check density?
+

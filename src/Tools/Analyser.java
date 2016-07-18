@@ -1,6 +1,7 @@
 package Tools;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by phuongt994 on 28/06/2016.
@@ -122,24 +123,56 @@ public class Analyser {
     private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<Integer> biList, LinkedHashMap<Integer, Float[]> LR) {
         System.out.println("Size of biList: " + biList.size());
         int curMax = -1;
-        int finMax = -1;
-        int posCurStart = 0;
-        int[] posTracker = {0, posCurStart};
+        int[] curPos = {0, 0};
+        LinkedList<int[]> allPos = new LinkedList<>();
 
-        for (int i = 0; i < biList.size() - 1; i++) {
-            curMax+= biList.get(i);
-            if (curMax > finMax) {
-                finMax = curMax;
-                posTracker[0] = posCurStart;
-                posTracker[1] = i;
-            } else if (curMax < -1) {
-                curMax = -1;
-                posCurStart = i+1;
+        for (int i = 0; i < biList.size(); i++) {
+            curMax += biList.get(i);
+            if (curMax < -1) {
+                //reset
+                if (curPos[0] > curPos[1]) {
+                    continue;
+                }
+                allPos.add(curPos.clone());
+                curPos[0] = i;
+            } else {
+                curPos[1] = i;
             }
         }
-        System.out.println("Max Sum is : " + finMax);
-        System.out.println("Positions of array: " + posTracker[0] + " " + posTracker[1]);
-        addCRange(key, map, attr, posTracker, biList, LR);
+        // allPos = allPos.stream().distinct().collect(Collectors.toCollection(LinkedList<int[]>::new));
+
+        System.out.println("All positions: ");
+        allPos.stream().forEach(p -> {
+            System.out.println(Arrays.toString(p));
+        });
+
+        // recursive loop needed? DOES NOT WORK YET -- push?
+//        int count = 0;
+//        int start, end;
+//        for (int k = 0; k < temp.size(); k++) {
+//            if (temp.indexOf(k) < temp.size() -1) {
+//                if ((int) temp.get(k) == 1) {
+//                    start = temp.indexOf(k);
+//                    if ((int) temp.get(k + 1) == 1) {
+//                        continue;
+//                    } else {
+//                        if ((int) temp.get(k + 1) == -1) {
+//                            count++;
+//                            if (count == 2) {
+//                                end = temp.indexOf(k + 1);
+//                                System.out.println("start and end ind subList :" + start + " " + end);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                break;
+//            }
+//        }
+
+
+        //addCRange(key, map, attr, allPos, biList, LR);
     }
 
     private void addCRange(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, int[] indRange, LinkedList<Integer> biList, LinkedHashMap<Integer, Float[]> LR) {
