@@ -8,25 +8,31 @@ import java.util.LinkedList;
  * Created by Phuongt994 on 10/07/2016.
  */
 public class Generator {
-    private LinkedHashMap<Integer, LinkedList<Float[]>> LR;
+    private LinkedList<LinkedList<Float>> CR;
     private String classTag;
-    public Generator(String classTag, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
-        this.LR = LR;
+    public Generator(String classTag, LinkedList<LinkedList<Float>> CR) {
+        this.CR = CR;
         this.classTag = classTag;
         System.out.println("Generator started for " + classTag);
-        System.out.println("LR entries: ");
-        for (Object key : LR.keySet()) {
-            System.out.println((Integer) key);
-            for (Float[] fl : LR.get(key)) {
-                System.out.println(Arrays.asList(fl));
-            };
-        }
-        aPriori(this.LR);
+        //System.out.println("CR entries");
+        aPriori(this.CR);
     }
 
-    private void aPriori(LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
-        for (Float[] range : LR.entrySet())
+    private void aPriori(LinkedList<LinkedList<Float>> CR) {
+        for (int i = 0; i < CR.size(); i++) {
+            LinkedList CRG = new LinkedList<LinkedList<LinkedList<Float>>>();
+            LinkedList<Float> target = CR.pop();
+            for (int j = 0; j < CR.size(); j++) {
+                LinkedList temp = new LinkedList<LinkedList<Float>>();
+                if (Math.round(target.getLast()) != Math.round(CR.get(j).getLast())) {
+                    temp.add(target);
+                    temp.add(CR.get(j));
+                    CRG.add(temp);
                 }
+            }
+            System.out.println("CR entries after REGEN: ");
+            for (int k = 0; k < CRG.size(); k++) {
+                System.out.println((CRG.get(k)).toString());
             }
         }
     }

@@ -61,15 +61,20 @@ public class Analyser {
             }
             System.out.println("Attr count : " + attrCount);
             LinkedHashMap LR = new LinkedHashMap<Integer, LinkedList<Float[]>>();
-            biConvert(classTag, attrSorted, LR);
+            LinkedList CR = new LinkedList<LinkedList<Float>>();
+            biConvert(classTag, attrSorted, CR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            System.out.println("All entryset: " + LR.entrySet());
-            new Generator(classTag, LR);
+            System.out.println("All entries ");
+            for (int i = 0; i < CR.size(); i++) {
+                System.out.println(((LinkedList<Float>) CR.get(i)).toString());
+            }
+
+            new Generator(classTag, CR);
         });
     }
 
-    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
+    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap, LinkedList<LinkedList<Float>> CR) {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
@@ -95,7 +100,7 @@ public class Analyser {
             });
 
             System.out.println("Converted binary list: " + biTuple);
-            maxSum(key, tempMap, attrNo, biTuple, LR);
+            maxSum(key, tempMap, attrNo, biTuple, CR);
         };
     }
 
@@ -104,7 +109,7 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<Integer> biList, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
+    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<Integer> biList, LinkedList<LinkedList<Float>> CR) {
         System.out.println("Size of biList: " + biList.size());
         int curMax = 0;
         int[] curPos = {0, 0};
@@ -140,17 +145,15 @@ public class Analyser {
             System.out.println(Arrays.toString(p));
         });
 
-        minThresh(key, map, attr, allPos, biList, LR);
+        minThresh(key, map, attr, allPos, biList, CR);
     }
 
     /***
      * Check for support & confidence (then density)
      *
      */
-    private void minThresh(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<int[]> allRange, LinkedList<Integer> biList, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
+    private void minThresh(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<int[]> allRange, LinkedList<Integer> biList, LinkedList<LinkedList<Float>> CR) {
         LinkedList list = new LinkedList<Integer>();
-
-        LinkedList cRange = new LinkedList<Float[]>();
 
         for (int[] range : allRange) {
             // eliminate 0,0
@@ -162,7 +165,6 @@ public class Analyser {
             }
 
             int pos = 0;
-            int neg = 0;
             for (int j = 0; j < list.size(); j++) {
                 if ((int) list.get(j) == 1) {
                     pos++;
@@ -173,24 +175,23 @@ public class Analyser {
             System.out.println("Support: " + support);
             System.out.println("Confidence: " + confidence);
 
-            if (support <  0.1) {
+            if (support <  0.0) { // NO REJECTION
                 System.out.println("Rejected");
             } else {
-                Float[] aRange = new Float[2];
-                aRange[0] = (Float) map.get(key).get(range[0]).get(attr);
-                aRange[1] = (Float) map.get(key).get(range[1]).get(attr);
+                LinkedList<Float> aRange = new LinkedList<>();
+                aRange.add((Float) map.get(key).get(range[0]).get(attr));
+                aRange.add((Float) map.get(key).get(range[1]).get(attr));
+                aRange.addLast((float) attr);
                 System.out.println("Converted aRange: " + Arrays.asList(aRange));
-                cRange.add(aRange);
+                CR.add(aRange);
             }
         }
-        System.out.println("cRange distinct()");
-        cRange = (LinkedList<Float[]>) cRange.stream().distinct().collect(Collectors.toCollection(LinkedList<Float[]>::new));
-        if (cRange.isEmpty()) {
+
+        CR = (LinkedList<LinkedList<Float>>) CR.stream().distinct().collect(Collectors.toCollection(LinkedList<LinkedList<Float>>::new));
+        if (CR.isEmpty()) {
             System.out.println("No ranges found.");
         } else {
-            LR.put(attr, cRange);
-            System.out.println("LR updated to " + LR.entrySet());
+            System.out.println("cRange for attr no " + attr + " is ready");
         }
     }
-
 }
