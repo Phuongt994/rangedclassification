@@ -65,12 +65,12 @@ public class Analyser {
             biConvert(classTag, attrSorted, CR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            System.out.println("All entries ");
-            for (int i = 0; i < CR.size(); i++) {
-                System.out.println(((LinkedList<Float>) CR.get(i)).toString());
-            }
+//            System.out.println("All entries ");
+//            for (int i = 0; i < CR.size(); i++) {
+//                System.out.println(((LinkedList<Float>) CR.get(i)).toString());
+//            }
 
-            new Generator(classTag, CR);
+            //new Generator(classTag, CR);
         });
     }
 
@@ -114,27 +114,23 @@ public class Analyser {
         int curMax = 0;
         int[] curPos = {0, 0};
         int startInd = 0;
-        boolean prevPos = false;
+        boolean sumPos = false;
         LinkedList<int[]> allPos = new LinkedList<>();
 
         for (int i = 0; i < biList.size(); i++) {
             curMax += biList.get(i);
             if (curMax < 0) {
                 //reset
-                if (prevPos == true) {
+                if (sumPos == true) {
                     allPos.add(curPos.clone());
                 }
                 startInd = i+1;
                 curMax = 0;
-                prevPos = false;
-
-            //} else if (i == biList.size() -1) {
-            //    allPos.add(curPos);
-            //    break;
+                sumPos = false;
             } else {
                 curPos[0] = startInd;
                 curPos[1] = i;
-                prevPos = true;
+                sumPos = true;
             }
         }
 
