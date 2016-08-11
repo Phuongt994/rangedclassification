@@ -78,9 +78,12 @@ public class Analyser {
             System.out.println("Attr count : " + attributeCount);
             System.out.println("Attr map values: " + allAttributeMap.entrySet());
             
+            /***
+             * LR? CR?
+             */
             LinkedHashMap LR = new LinkedHashMap<Integer, LinkedList<Float[]>>();
             LinkedList CR = new LinkedList<LinkedList<Float>>();
-            // biConvert(classTag, attrSorted, CR);
+            binaryConvert(classTag, allAttributeMap, CR);
 
             System.out.println("Done 1 class - sending to generator\n");
 //            System.out.println("All entries ");
@@ -92,11 +95,11 @@ public class Analyser {
         });
     }
 
-    private void biConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> attrMap, LinkedList<LinkedList<Float>> CR) {
+    private void binaryConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> allAttributeMap, LinkedList<LinkedList<Float>> CR) {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
-        LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(attrMap);
+        LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(allAttributeMap);
 
         int order = 0;
         for (Object key : tempMap.keySet()) {
