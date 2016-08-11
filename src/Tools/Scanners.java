@@ -8,25 +8,32 @@ import java.util.*;
  * Created by phuongt994 on 17/06/2016.
  */
 public class Scanners {
-    private String dataDir;
-    private Scanner scanner1, scanner2;
-    private LinkedList<String> t;
-    private LinkedList<LinkedList> tuple;
-    private HashSet<String> classes;
-    private HashMap<String, LinkedList<LinkedList>> classMap;
+	/***
+	 * dD data directory
+	 * sc1 scanner1
+	 * sc2 scanner2
+	 * Tuple all tuples
+	 * C all classes
+	 * cM class map
+	 * t one tuple
+	 */
+	private LinkedList<String> aTuple;
+    private LinkedList<LinkedList> allTuple;
+    private HashSet<String> allClass;
+    private HashMap<String, LinkedList<LinkedList>> allClassMap;
 
 
     public Scanners() {
-        processData();
+        scanData();
     }
 
-    private void processData() {
+    private void scanData () {
         // specify data directory
-        dataDir = "iris.csv";
+        String dataDirectory = "processed.cleveland.data.csv";
 
-        //initialise tuple list and class set
-        tuple = new LinkedList<>();
-        classes = new HashSet<>();
+        // initialise aTuple list and class set
+        allTuple = new LinkedList<>();
+        allClass = new HashSet<>();
 
         // scanner to read data
         // read each line
@@ -34,39 +41,35 @@ public class Scanners {
         // add each tuple to the tuple list
         // tuple list can now retrieve many sublists of tuples where elements in each tuple can be queried
         try {
-            scanner1 = new Scanner(new File(dataDir));
+            Scanner scanner1 = new Scanner(new File(dataDirectory));
             while (scanner1.hasNext()) {
                 String str = scanner1.nextLine();
-                scanner2 = new Scanner(str);
+                Scanner scanner2 = new Scanner(str);
                 scanner2.useDelimiter(",");
-                t = new LinkedList<>();
+                aTuple = new LinkedList<>();
                 while (scanner2.hasNext()) {
-                    t.add(scanner2.next());
+                    aTuple.add(scanner2.next());
                 }
-                tuple.add(t);
+                allTuple.add(aTuple);
             }
 
             // process tuple elements (for class tag and ordered number)
-            for (int i = 0; i < tuple.size(); i++) {
-                tuple.get(i).add(0, i);
-                classes.add(tuple.get(i).get(5).toString());
+            for (int i = 0; i < allTuple.size(); i++) {
+                allTuple.get(i).addFirst(i);
+                allClass.add(allTuple.get(i).getLast().toString());
                 // change string attribute values to float
-                for (int j = 1; j < 5; j++) {
-                    tuple.get(i).set(j, Float.parseFloat(tuple.get(i).get(j).toString()));
+                for (int j = 1; j < aTuple.size(); j++) {
+                    allTuple.get(i).set(j, Float.parseFloat(allTuple.get(i).get(j).toString()));
                 }
             }
-
+           
             sortData();
 
-            scanner1.close();
-            scanner2.close();
-
             reportScan();
-            // Pass hashmap into Analyser?
-            new Analyser(tuple, classMap);
-
-            // pass tuple and class tags to analyser
-            // new Sorter(tuple, classes);
+            
+            // Pass tuples and hashmap to Analyser
+            new Analyser(allTuple, allClassMap);
+            
         }
         catch (FileNotFoundException fe) {
             System.out.println(fe);
@@ -76,33 +79,32 @@ public class Scanners {
     private void sortData() {
         // make a HashMap for class tags and (processed) tuples
         // initialise HashMap
-        classMap = new HashMap<>();
+        allClassMap = new HashMap<>();
 
-        classes.stream().forEach(c -> {
-            classMap.put(c, null);
+        allClass.stream().forEach(c -> {
+            allClassMap.put(c, null);
         });
 
         // for each class as key in Map
-        classMap.keySet().stream().forEach(k -> {
-            LinkedList temp = new LinkedList<List>();
+        allClassMap.keySet().stream().forEach(k -> {
+            LinkedList temp = new LinkedList<LinkedList>();
             // for each tuple
-            for (int i = 0; i < tuple.size(); i++) {
-//                int order = i;
+            for (int i = 0; i < allTuple.size(); i++) {
                 // if tuple's class == class name
                 // add to temp tuple list
-                if (tuple.get(i).get(5).equals(k)) {
-                    temp.add(tuple.get(i));
+                if (allTuple.get(i).getLast().equals(k)) {
+                    temp.add(allTuple.get(i));
                 }
                 // append temp list to relevant class key in Map
-                classMap.put(k, temp);
+                allClassMap.put(k, temp);
             }
         });
     }
 
     private void reportScan() {
-        System.out.println("Scanner started \nTuple list ready: " + tuple);
-        System.out.println("Class list ready: " + classes);
-        System.out.println("Hashmap ready: " + classMap.entrySet());
+        System.out.println("Scanner started \nTupleuple list ready: " + allTuple);
+        System.out.println("Class list ready: " + allClass);
+        System.out.println("Hashmap ready: " + allClassMap.entrySet());
     }
 
 }

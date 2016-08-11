@@ -7,62 +7,80 @@ import java.util.stream.Collectors;
  * Created by phuongt994 on 28/06/2016.
  */
 public class Analyser {
-    private HashMap<String, LinkedList<LinkedList>> classMap;
-    private LinkedList<LinkedList> tuple;
-    // LinkedHashMap to preserve order of insertion
-    private LinkedHashMap<Float[], LinkedList<LinkedList>> attrSorted;
-    private LinkedList attrVal;
+	/***
+	 * allTuple : map classified by class
+	 * allTuple : all tuple 
+	 * allAttributeMap : attribute-sorted map 
+	 * attributeValue : attribute values
+	 * LR : ??
+	 */
+    private HashMap<String, LinkedList<LinkedList>> allClassMap;
+    private LinkedList<LinkedList> allTuple;
+    private LinkedHashMap<Float[], LinkedList<LinkedList>> allAttributeMap;
+    private LinkedList<Float> attributeValue;
     private LinkedHashMap<Integer, LinkedList<Float[]>> LR;
 
-    public Analyser(LinkedList<LinkedList> tuple, HashMap classMap) {
-        this.tuple = new LinkedList<>();
-        this.tuple = tuple;
-        this.classMap = new HashMap<>(classMap);
-        maxMin(this.classMap);
+    public Analyser(LinkedList<LinkedList> allTuple, HashMap allClassMap) {
+        this.allTuple = new LinkedList<>();
+        this.allTuple = allTuple;
+        this.allClassMap = new HashMap<>(allClassMap);
+        maxMin(this.allClassMap);
     }
-
-    private void maxMin(HashMap<String, LinkedList<LinkedList>> map) {
-
-        map.keySet().forEach(k -> {
+    
+    /*** 
+     * @param allClassMap class map 
+     * c one class
+     * aC attribute count
+     * aN attribute number
+     * allAttributeMap attribute-sorted map 
+     * attributeValue attribute-sorted values
+     * aR one attribute range
+     * aRallTuple attribute-range sorted tuples
+     */
+    private void maxMin(HashMap<String, LinkedList<LinkedList>> allClassMap) {
+        allClassMap.keySet().forEach(k -> {
             String classTag = k;
-            int attrCount = 0;
+            int attributeCount = 0;
 
             System.out.println("------------------------");
             System.out.println("For class " + classTag);
 
-            attrSorted = new LinkedHashMap<>();
+            allAttributeMap = new LinkedHashMap<>();
 
             // for each attribute
-            for (int i = 1; i < map.get(k).get(0).size() -1; i++) {
-                int order = i;
-                attrVal = new LinkedList<Float>();
-                map.get(k).stream().forEach(t -> {
-                    attrVal.add(t.get(order));
+            for (int i = 1; i < allClassMap.get(k).get(0).size() - 1; i++) {
+            	int attributeNumber = i;
+                attributeValue = new LinkedList<>();
+                allClassMap.get(k).stream().forEach(t -> {
+                    attributeValue.add((Float) t.get(attributeNumber));
                 });
-                System.out.println("List of attr number " + i + " : " + attrVal);
-                attrCount++;
+                System.out.println("List of attr number " + attributeNumber + " : " + attributeValue);
+                attributeCount++;
 
-                Collections.sort(attrVal);
-                Float[] attrRange = new Float[2];
-                attrRange[0] = (Float) attrVal.getFirst();
-                attrRange[1] = (Float) attrVal.getLast();
-                System.out.println("Range of attr number " + i + " : " + attrRange[0] + " " + attrRange[1]);
+                Collections.sort(attributeValue);
+                Float[] attributeRange = new Float[2];
+                attributeRange[0] = attributeValue.getFirst();
+                attributeRange[1] = attributeValue.getLast();
+                System.out.println("Range of attr number " + attributeNumber + " : " + attributeRange[0] + " " + attributeRange[1]);
 
-                LinkedList tupleAList = new LinkedList<LinkedList>();
-                tuple.stream().forEach(t -> {
-                    if (attrRange[0] <= (Float) t.get(order) && (Float) t.get(order) <= attrRange[1]) {
-                        tupleAList.add(t);
+                LinkedList attributeRangedTuple = new LinkedList<LinkedList>();
+                allTuple.stream().forEach(t -> {
+                    if (attributeRange[0] <= (Float) t.get(attributeNumber) && (Float) t.get(attributeNumber) <= attributeRange[1]) {
+                        attributeRangedTuple.add(t);
                     }
                 });
 
-                System.out.println("TupleAList in hashMap: " + tupleAList);
-                attrSorted.put(attrRange, tupleAList);
+                System.out.println("Attribute-range sorted tuples for attr no " + i + " is : " + attributeRangedTuple);
+                // append to attribute map aM
+                allAttributeMap.put(attributeRange, attributeRangedTuple);
 
             }
-            System.out.println("Attr count : " + attrCount);
+            System.out.println("Attr count : " + attributeCount);
+            System.out.println("Attr map values: " + allAttributeMap.entrySet());
+            
             LinkedHashMap LR = new LinkedHashMap<Integer, LinkedList<Float[]>>();
             LinkedList CR = new LinkedList<LinkedList<Float>>();
-            biConvert(classTag, attrSorted, CR);
+            // biConvert(classTag, attrSorted, CR);
 
             System.out.println("Done 1 class - sending to generator\n");
 //            System.out.println("All entries ");
