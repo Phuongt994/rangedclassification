@@ -110,7 +110,7 @@ public class Analyser {
             System.out.println("Sorted map by attr no. : " + (attributeNumber) + " || "  + tempAttributeMap.get(key));
 
             // create a temp binary list
-            LinkedList binaryList = new LinkedList<Integer>();
+            LinkedList<Integer> binaryList = new LinkedList<>();
             tempAttributeMap.get(key).stream().forEach(tuple -> {
                 // append 1 and -1 into an array for max sum solution
                 if (tuple.getLast().equals(classTag)) {
@@ -139,31 +139,23 @@ public class Analyser {
 
         for (int i = 0; i < binaryList.size(); i++) {
             currentMax += binaryList.get(i);
-            if (currentMax < 0) {
-                //reset
-                if (prevSumIsPositive == true) {
-                    allPosition.add(currentPosition.clone());
-                }
-                currentPosition[0] = i+1;
-                currentPosition[1] = i+1;
-                currentMax = 0;
-                prevSumIsPositive = false;
-            } else {
+            if (currentMax >= 0) {
             	currentPosition[1] = i;
-                boolean checker = checkThresh(currentPosition.clone(), binaryList);
-                if (checker == true) {
-                	prevSumIsPositive = true;
-                } else {
-                	 allPosition.add(currentPosition.clone());
-                	 currentPosition[0] = i+1;
-                     currentPosition[1] = i+1;
-                     currentMax = 0;
-                     prevSumIsPositive = false;
-                }
-                
+            	prevSumIsPositive = true;
+            } else {
+            	if (prevSumIsPositive == true) {
+            		currentPosition[1] = i;
+            		boolean checker = checkThresh(currentPosition.clone(), binaryList);
+                	if (checker == true) {
+                		allPosition.add(currentPosition.clone());
+                	}
+            	}
+            	currentPosition[0] = i+1;
+            	currentPosition[1] = i+1;
+            	currentMax = 0;
+            	prevSumIsPositive = false;
             }
         }
-
         //allPos = allPos.stream().distinct().collect(Collectors.toCollection(LinkedList<int[]>::new));
 
         System.out.println("All positions: ");
