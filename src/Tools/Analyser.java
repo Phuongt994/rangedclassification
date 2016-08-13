@@ -99,29 +99,29 @@ public class Analyser {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
-        LinkedHashMap<Float[], LinkedList<LinkedList>> tempMap = new LinkedHashMap<>(allAttributeMap);
+        LinkedHashMap<Float[], LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
 
         int order = 0;
-        for (Object key : tempMap.keySet()) {
+        for (Object key : tempAttributeMap.keySet()) {
             ++order;
-            int attrNo = order;
-            Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attrNo)).compareTo((Float) b.get(attrNo));
-            tempMap.get(key).sort(comp);
-            System.out.println("Sorted map by attr no. : " + (attrNo) + " || "  + tempMap.get(key));
+            int attributeNumber = order;
+            Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
+            tempAttributeMap.get(key).sort(comp);
+            System.out.println("Sorted map by attr no. : " + (attributeNumber) + " || "  + tempAttributeMap.get(key));
 
             // create a temp binary list
-            LinkedList biTuple = new LinkedList<Integer>();
-            tempMap.get(key).stream().forEach(tuple -> {
+            LinkedList binaryList = new LinkedList<Integer>();
+            tempAttributeMap.get(key).stream().forEach(tuple -> {
                 // append 1 and -1 into an array for max sum solution
-                if (tuple.get(tuple.size() - 1).equals(classTag)) {
-                    biTuple.add(1);
+                if (tuple.getLast().equals(classTag)) {
+                    binaryList.add(1);
                 } else {
-                    biTuple.add(-1);
+                    binaryList.add(-1);
                 }
             });
 
-            System.out.println("Converted binary list: " + biTuple);
-            maxSum(key, tempMap, attrNo, biTuple, CR);
+            System.out.println("Converted binary list: " + binaryList);
+            maxSum(key, tempAttributeMap, attributeNumber, binaryList, CR);
         };
     }
 
@@ -130,41 +130,86 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> map, int attr, LinkedList<Integer> biList, LinkedList<LinkedList<Float>> CR) {
-        System.out.println("Size of biList: " + biList.size());
-        int curMax = 0;
-        int[] curPos = {0, 0};
-        int startInd = 0;
-        boolean sumPos = false;
-        LinkedList<int[]> allPos = new LinkedList<>();
+    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> tempAttributeMap, int attributeNumber, LinkedList<Integer> binaryList, LinkedList<LinkedList<Float>> CR) {
+        System.out.println("Size of biList: " + binaryList.size());
+        int currentMax = 0;
+        int[] currentPosition = {0, 0};
+        boolean prevSumIsPositive = false;
+        LinkedList<int[]> allPosition = new LinkedList<>();
 
-        for (int i = 0; i < biList.size(); i++) {
-            curMax += biList.get(i);
-            if (curMax < 0) {
+        for (int i = 0; i < binaryList.size(); i++) {
+            currentMax += binaryList.get(i);
+            if (currentMax < 0) {
                 //reset
-                if (sumPos == true) {
-                    allPos.add(curPos.clone());
+                if (prevSumIsPositive == true) {
+                    allPosition.add(currentPosition.clone());
                 }
-                startInd = i+1;
-                curMax = 0;
-                sumPos = false;
+                currentPosition[0] = i+1;
+                currentPosition[1] = i+1;
+                currentMax = 0;
+                prevSumIsPositive = false;
             } else {
-                curPos[0] = startInd;
-                curPos[1] = i;
-                sumPos = true;
+            	currentPosition[1] = i;
+                boolean checker = checkThresh(currentPosition.clone(), binaryList);
+                if (checker == true) {
+                	prevSumIsPositive = true;
+                } else {
+                	 allPosition.add(currentPosition.clone());
+                	 currentPosition[0] = i+1;
+                     currentPosition[1] = i+1;
+                     currentMax = 0;
+                     prevSumIsPositive = false;
+                }
+                
             }
         }
 
         //allPos = allPos.stream().distinct().collect(Collectors.toCollection(LinkedList<int[]>::new));
 
         System.out.println("All positions: ");
-        allPos.stream().forEach(p -> {
+        allPosition.stream().forEach(p -> {
             System.out.println(Arrays.toString(p));
         });
 
-        minThresh(key, map, attr, allPos, biList, CR);
+        // minThresh(key, tempAttributeMap, attributeNumber, allPosition, binaryList, CR);
     }
+    /***
+     * Check for threshold within maxsum
+     */
+    
+    private boolean checkThresh(int[] currentPosition, LinkedList<Integer> binaryList) {
+    	// for support
+    	float support = (float) currentPosition[1] - currentPosition[0] / binaryList.size();
+    	
+    	// for confidence
+    	LinkedList tempList = new LinkedList<Integer>();
+    	for (int i = 0; i < currentPosition[1] - currentPosition[0]; i++) {
+            tempList.add(binaryList.get(i));
+        }
 
+        int positiveCount = 0;
+        for (int j = 0; j < tempList.size(); j++) {
+            if ((int) tempList.get(j) == 1) {
+                positiveCount++;
+            }
+        }
+        float confidence = (float) positiveCount / tempList.size();
+        
+        System.out.println("Support: " + support);
+        System.out.println("Confidence: " + confidence);
+        
+        // conditions
+        // support & confidence current accepted as positive (no rejects)
+        if (support > 0.0) { 
+        	if (confidence > 0.0) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        } else {
+        	return false;
+        }
+    }
     /***
      * Check for support & confidence (then density)
      *
@@ -173,7 +218,7 @@ public class Analyser {
         LinkedList list = new LinkedList<Integer>();
 
         for (int[] range : allRange) {
-            // eliminate 0,0
+            // for support
             float support = (float) (range[1] - range[0]) / biList.size();
 
             // for confidence
