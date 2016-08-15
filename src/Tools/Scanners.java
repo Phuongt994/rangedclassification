@@ -29,7 +29,7 @@ public class Scanners {
 
     private void scanData () {
         // specify data directory
-        String dataDirectory = "processed.cleveland.data.csv";
+        String dataDirectory = "wine.csv";
 
         // initialise aTuple list and class set
         allTuple = new LinkedList<>();

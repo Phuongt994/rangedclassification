@@ -177,7 +177,7 @@ public class Analyser {
         
         // conditions
         // support & confidence current accepted as positive (no rejects)
-        if (support > 0.0) { 
+        if (support > 0.1) { 
         	if (confidence > 0.3) {
         		System.out.println("Range " + Arrays.toString(currentPosition) + " is accepted");
         		System.out.println("Support: " + support);
