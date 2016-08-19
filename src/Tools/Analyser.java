@@ -190,5 +190,8 @@ public class Analyser {
         	return false;
         }
     }
-    
+   
+    private void getAllAttributeMap() {
+    	
+    }
 }
