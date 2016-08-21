@@ -8,15 +8,6 @@ import java.util.*;
  * Created by phuongt994 on 17/06/2016.
  */
 public class Scanners {
-	/***
-	 * dD data directory
-	 * sc1 scanner1
-	 * sc2 scanner2
-	 * Tuple all tuples
-	 * C all classes
-	 * cM class map
-	 * t one tuple
-	 */
 	private LinkedList<String> aTuple;
     private LinkedList<LinkedList> allTuple;
     private HashSet<String> allClass;

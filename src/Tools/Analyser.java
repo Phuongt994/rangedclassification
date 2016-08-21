@@ -16,9 +16,9 @@ public class Analyser {
 	 */
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
     private LinkedList<LinkedList> allTuple;
-    private LinkedHashMap<Float[], LinkedList<LinkedList>> allAttributeMap;
+    private LinkedHashMap<Integer, LinkedList<LinkedList>> allAttributeMap;
     private LinkedList<Float> attributeValue;
-    private LinkedHashMap<Integer, LinkedList<Float[]>> LR;
+    private LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR;
 
     public Analyser(LinkedList<LinkedList> allTuple, HashMap allClassMap) {
         this.allTuple = new LinkedList<>();
@@ -62,7 +62,9 @@ public class Analyser {
 
                 // System.out.println("Attribute-range sorted tuples for attr no " + i + " is : " + attributeRangedTuple);
                 // append to attribute map aM
-                allAttributeMap.put(attributeRange, attributeRangedTuple);
+                // add Range as first item in attrRangedTuple?
+                attributeRangedTuple.addFirst(attributeRange);
+                allAttributeMap.put(attributeNumber, attributeRangedTuple);
 
             }
             System.out.println("Attr count : " + attributeCount);
@@ -71,25 +73,27 @@ public class Analyser {
             /***
              * LR? CR?
              */
-            LinkedHashMap LR = new LinkedHashMap<Integer, LinkedList<Float[]>>();
+            LR = new LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>>();
             // LinkedList CR = new LinkedList<LinkedList<Float>>();
             binaryConvert(classTag, allAttributeMap, LR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            new Generator(classTag, LR);
+            new Generator(classTag, LR, allTuple, allClassMap);
         });
     }
 
-    private void binaryConvert(String classTag, LinkedHashMap<Float[], LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
+    private void binaryConvert(String classTag, LinkedHashMap<Integer, LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
-        LinkedHashMap<Float[], LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
+        // DO WE NEED CLONE?
+        LinkedHashMap<Integer, LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
 
-        int order = 0;
         for (Object key : tempAttributeMap.keySet()) {
-            ++order;
-            int attributeNumber = order;
+            int attributeNumber = (int) key;
+            // Do we need the range?
+            // Range is removed with removeFirst()
+            tempAttributeMap.get(key).removeFirst();
             Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
             tempAttributeMap.get(key).sort(comp);
             // System.out.println("Sorted map by attr no. : " + (attributeNumber) + " || "  + tempAttributeMap.get(key));
@@ -106,7 +110,11 @@ public class Analyser {
             });
 
             System.out.println("Converted binary list for attribute no. " + attributeNumber + ": " + binaryList);
-            maxSum(key, tempAttributeMap, attributeNumber, binaryList, LR);
+            
+            // put attr number in list instead of integer to prepare for next iteration
+            LinkedList attributeNumberList = new LinkedList<Integer>();
+            attributeNumberList.add(attributeNumber);
+            maxSum(attributeNumberList, binaryList, LR);
         };
     }
 
@@ -114,7 +122,8 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    private void maxSum(Object key, LinkedHashMap<Float[], LinkedList<LinkedList>> tempAttributeMap, int attributeNumber, LinkedList<Integer> binaryList, LinkedHashMap<Integer, LinkedList<Float[]>> LR) {
+    public void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    	// what is LR for in next iteration?
         // System.out.println("Size of biList: " + binaryList.size() + " for attr number " + attributeNumber);
         int currentMax = 0;
         int[] currentPosition = {0, 0};
@@ -142,17 +151,14 @@ public class Analyser {
         }
         //allPos = allPos.stream().distinct().collect(Collectors.toCollection(LinkedList<int[]>::new));
 
-        System.out.println("All positions for attribute number " + attributeNumber + " is :");
+        System.out.println("All positions for attribute number " + attributeNumberList.get(0) + " is :");
         // transform it back to float ranges
-        LinkedList<Float[]> CR = new LinkedList<>();
+        LinkedList<int[]> CR = new LinkedList<>();
         allPosition.stream().forEach(p -> {
             System.out.println(Arrays.toString(p));
-            Float[] aFloatRange = new Float[2];
-            aFloatRange[0] = (Float) tempAttributeMap.get(key).get(p[0]).get(attributeNumber);
-            aFloatRange[1] = (Float) tempAttributeMap.get(key).get(p[1]).get(attributeNumber);
-            CR.add(aFloatRange);
+            CR.add(p);
         }); 
-        LR.put(attributeNumber, CR);
+        LR.put(attributeNumberList, CR);
     }
     /***
      * Check for threshold within maxsum
@@ -190,8 +196,8 @@ public class Analyser {
         	return false;
         }
     }
-   
-    private void getAllAttributeMap() {
-    	
+    
+    public LinkedHashMap<Integer, LinkedList<LinkedList>> getAllAttributeMap() {
+    	return allAttributeMap;
     }
 }
