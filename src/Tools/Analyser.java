@@ -78,7 +78,9 @@ public class Analyser {
             binaryConvert(classTag, allAttributeMap, LR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            new Generator(classTag, LR, allTuple, allClassMap);
+            System.out.println("LR entries");
+            System.out.println(LR.entrySet());
+            // new Generator(classTag, LR, allTuple, allClassMap);
         });
     }
 
@@ -138,10 +140,11 @@ public class Analyser {
             } else {
             	if (prevSumIsPositive == true) {
             		currentPosition[1] = i;
-            		boolean checker = checkThresh(currentPosition.clone(), binaryList);
-                	if (checker == true) {
-                		allPosition.add(currentPosition.clone());
-                	}
+            		allPosition.add(currentPosition.clone());
+//            		boolean checker = checkThresh(currentPosition.clone(), binaryList);
+//                	if (checker == true) {
+//                		allPosition.add(currentPosition.clone());
+//                	}
             	}
             	currentPosition[0] = i+1;
             	currentPosition[1] = i+1;
@@ -149,52 +152,50 @@ public class Analyser {
             	prevSumIsPositive = false;
             }
         }
-        //allPos = allPos.stream().distinct().collect(Collectors.toCollection(LinkedList<int[]>::new));
+        
+        // checker 
+        checkThresh(allPosition, binaryList, attributeNumberList);
 
-        System.out.println("All positions for attribute number " + attributeNumberList.get(0) + " is :");
-        // transform it back to float ranges
-        LinkedList<int[]> CR = new LinkedList<>();
-        allPosition.stream().forEach(p -> {
-            System.out.println(Arrays.toString(p));
-            CR.add(p);
-        }); 
-        LR.put(attributeNumberList, CR);
     }
     /***
-     * Check for threshold within maxsum
+     * Check for threshold 
+     * AFTER maxsum
      */
-    private boolean checkThresh(int[] currentPosition, LinkedList<Integer> binaryList) {
-    	// for support
-    	float support = (float) (currentPosition[1] - currentPosition[0]) / binaryList.size();
-    	
-    	// for confidence
-    	LinkedList tempList = new LinkedList<Integer>();
-    	for (int i = 0; i < currentPosition[1] - currentPosition[0]; i++) {
-            tempList.add(binaryList.get(i));
-        }
-
-        int positiveCount = 0;
-        for (int j = 0; j < tempList.size(); j++) {
-            if ((int) tempList.get(j) == 1) {
-                positiveCount++;
-            }
-        }
-        float confidence = (float) positiveCount / tempList.size();
-        
-        // conditions
-        // support & confidence current accepted as positive (no rejects)
-        if (support > 0.1) { 
-        	if (confidence > 0.3) {
-        		System.out.println("Range " + Arrays.toString(currentPosition) + " is accepted");
-        		System.out.println("Support: " + support);
-                System.out.println("Confidence: " + confidence);
-        		return true;
-        	} else {
-        		return false;
-        	}
-        } else {
-        	return false;
-        }
+    private void checkThresh(LinkedList<int[]> allPosition, LinkedList<Integer> binaryList, LinkedList<Integer> attributeNumberList) {
+    	System.out.println("Checking all positions collected");
+    	LinkedList<int[]> CR = new LinkedList<>();
+    	for (int[] currentPosition : allPosition) {
+    		// for support
+	    	float support = (float) (currentPosition[1] - currentPosition[0]) / binaryList.size();
+	    	
+	    	// for confidence
+	    	LinkedList tempList = new LinkedList<Integer>();
+	    	for (int i = 0; i < currentPosition[1] - currentPosition[0]; i++) {
+	            tempList.add(binaryList.get(i));
+	        }
+	
+	        int positiveCount = 0;
+	        for (int j = 0; j < tempList.size(); j++) {
+	            if ((int) tempList.get(j) == 1) {
+	                positiveCount++;
+	            }
+	        }
+	        float confidence = (float) positiveCount / tempList.size();
+	        
+	        // conditions
+	        // support & confidence check
+	        if (support > 0.1 && confidence > 0.3) { 
+	        	System.out.println("Range " + Arrays.toString(currentPosition) + " is accepted");
+	        	System.out.println("Support: " + support);
+	        	System.out.println("Confidence: " + confidence);
+	        	CR.add(currentPosition);
+	        }
+    	}
+    	System.out.println("All positions for attribute number " + attributeNumberList.get(0) + " is :");
+    	for (int[] p : CR) {
+    		System.out.println(Arrays.toString(p));
+    	}
+        LR.put(attributeNumberList, CR);
     }
     
     public LinkedHashMap<Integer, LinkedList<LinkedList>> getAllAttributeMap() {
