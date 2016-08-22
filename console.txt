@@ -111,9 +111,40 @@ Done 1 class - sending to generator
 
 LR entries
 [[1]=[[I@7cc355be, [I@6e8cf4c6], [2]=[[I@12edcd21], [3]=[[I@34c45dca, [I@52cc8049, [I@5b6f7412], [4]=[[I@27973e9b], [5]=[[I@312b1dae], [6]=[[I@7530d0a], [7]=[], [8]=[[I@27bc2616], [9]=[], [10]=[], [11]=[], [12]=[[I@3941a79c, [I@506e1b77], [13]=[]]
-Generator started for 1
-Exception in thread "main" java.lang.ClassCastException: java.util.LinkedList cannot be cast to java.lang.Integer
-	at Tools.Generator.<init>(Generator.java:25)
+Generator started for class 1
+For attribute number [1] Ranges are: 
+[10, 22]
+[24, 42]
+For attribute number [2] Ranges are: 
+[19, 113]
+For attribute number [3] Ranges are: 
+[0, 16]
+[84, 110]
+[131, 149]
+For attribute number [4] Ranges are: 
+[0, 108]
+For attribute number [5] Ranges are: 
+[50, 82]
+For attribute number [6] Ranges are: 
+[12, 34]
+For attribute number [7] Ranges are: 
+For attribute number [8] Ranges are: 
+[0, 110]
+For attribute number [9] Ranges are: 
+For attribute number [10] Ranges are: 
+For attribute number [11] Ranges are: 
+For attribute number [12] Ranges are: 
+[5, 19]
+[22, 74]
+For attribute number [13] Ranges are: 
+Apriori started
+Attribute number 1 is being processed
+Exception in thread "main" java.lang.NullPointerException
+	at java.util.LinkedList.addAll(LinkedList.java:408)
+	at java.util.LinkedList.addAll(LinkedList.java:387)
+	at java.util.LinkedList.<init>(LinkedList.java:119)
+	at Tools.Generator.aPriori(Generator.java:56)
+	at Tools.Generator.<init>(Generator.java:30)
 	at Tools.Analyser.lambda$0(Analyser.java:83)
 	at java.util.HashMap$KeySet.forEach(HashMap.java:932)
 	at Tools.Analyser.maxMin(Analyser.java:31)

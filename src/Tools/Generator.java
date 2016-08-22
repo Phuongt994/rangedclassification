@@ -22,7 +22,7 @@ public class Generator {
         this.allClassMap = allClassMap;
         System.out.println("Generator started for class " + this.classTag);
         for (Object key : LR.keySet()) {
-        	System.out.println("For attribute number " + (int) key + " Ranges are: ");
+        	System.out.println("For attribute number " + (LinkedList<Integer>) key+ " Ranges are: ");
         	for (int[] aPosRange : LR.get(key)) {
         		System.out.println(Arrays.toString(aPosRange));
         	}
