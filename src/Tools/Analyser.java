@@ -80,7 +80,7 @@ public class Analyser {
             System.out.println("Done 1 class - sending to generator\n");
             System.out.println("LR entries");
             System.out.println(LR.entrySet());
-            // new Generator(classTag, LR, allTuple, allClassMap);
+            new Generator(classTag, LR, allTuple, allClassMap);
         });
     }
 
@@ -200,5 +200,10 @@ public class Analyser {
     
     public LinkedHashMap<Integer, LinkedList<LinkedList>> getAllAttributeMap() {
     	return allAttributeMap;
+    }
+    
+    public LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> resetLR() {
+    	LR.clear();
+    	return LR;
     }
 }

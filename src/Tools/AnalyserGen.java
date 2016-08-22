@@ -64,8 +64,11 @@ public class AnalyserGen extends Analyser {
 		}
 		
 		// don't know what to do with LR yet..
-		maxSum(aCombinedKey, binaryList, null);
+		maxSum(aCombinedKey, binaryList, resetLR());
 	}
 	
+	private void checkThresh() {
+		System.out.println("Replaced");
+	}
 	
 }

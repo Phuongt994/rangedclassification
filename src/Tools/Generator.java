@@ -20,7 +20,7 @@ public class Generator {
         this.classTag = classTag;
         this.allTuple = allTuple;
         this.allClassMap = allClassMap;
-        System.out.println("Generator started for " + this.classTag);
+        System.out.println("Generator started for class " + this.classTag);
         for (Object key : LR.keySet()) {
         	System.out.println("For attribute number " + (int) key + " Ranges are: ");
         	for (int[] aPosRange : LR.get(key)) {
