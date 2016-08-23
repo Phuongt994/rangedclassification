@@ -21,6 +21,7 @@ Attr count : 13
 
 biConvert() for class 1
 Converted binary list for attribute no. 1: [1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1]
+checkThresh() started
 Checking all positions collected
 Range [10, 22] is accepted
 Support: 0.11881188
@@ -32,6 +33,7 @@ All positions for attribute number 1 is :
 [10, 22]
 [24, 42]
 Converted binary list for attribute no. 2: [1, -1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1]
+checkThresh() started
 Checking all positions collected
 Range [19, 113] is accepted
 Support: 0.676259
@@ -39,6 +41,7 @@ Confidence: 0.5425532
 All positions for attribute number 2 is :
 [19, 113]
 Converted binary list for attribute no. 3: [1, 1, 1, -1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1]
+checkThresh() started
 Checking all positions collected
 Range [0, 16] is accepted
 Support: 0.10191083
@@ -54,6 +57,7 @@ All positions for attribute number 3 is :
 [84, 110]
 [131, 149]
 Converted binary list for attribute no. 4: [1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1]
+checkThresh() started
 Checking all positions collected
 Range [0, 108] is accepted
 Support: 0.63529414
@@ -61,6 +65,7 @@ Confidence: 0.5
 All positions for attribute number 4 is :
 [0, 108]
 Converted binary list for attribute no. 5: [1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1]
+checkThresh() started
 Checking all positions collected
 Range [50, 82] is accepted
 Support: 0.25396827
@@ -68,6 +73,7 @@ Confidence: 0.375
 All positions for attribute number 5 is :
 [50, 82]
 Converted binary list for attribute no. 6: [1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, -1, 1, 1]
+checkThresh() started
 Checking all positions collected
 Range [12, 34] is accepted
 Support: 0.21568628
@@ -75,9 +81,11 @@ Confidence: 0.36363637
 All positions for attribute number 6 is :
 [12, 34]
 Converted binary list for attribute no. 7: [1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, 1]
+checkThresh() started
 Checking all positions collected
 All positions for attribute number 7 is :
 Converted binary list for attribute no. 8: [1, 1, 1, -1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1]
+checkThresh() started
 Checking all positions collected
 Range [0, 110] is accepted
 Support: 0.7482993
@@ -85,15 +93,19 @@ Confidence: 0.5
 All positions for attribute number 8 is :
 [0, 110]
 Converted binary list for attribute no. 9: [1, 1, -1, -1, -1, -1, 1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, -1, -1, -1, -1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1]
+checkThresh() started
 Checking all positions collected
 All positions for attribute number 9 is :
 Converted binary list for attribute no. 10: [1, 1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, -1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, 1, 1]
+checkThresh() started
 Checking all positions collected
 All positions for attribute number 10 is :
 Converted binary list for attribute no. 11: [1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, -1, -1, -1, 1, 1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, -1, -1, 1, -1]
+checkThresh() started
 Checking all positions collected
 All positions for attribute number 11 is :
 Converted binary list for attribute no. 12: [1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, -1, 1, -1, 1, -1, -1, 1, -1, -1, -1, -1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, -1, -1, -1, 1, 1, 1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, 1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1]
+checkThresh() started
 Checking all positions collected
 Range [5, 19] is accepted
 Support: 0.12962963
@@ -105,13 +117,12 @@ All positions for attribute number 12 is :
 [5, 19]
 [22, 74]
 Converted binary list for attribute no. 13: [1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+checkThresh() started
 Checking all positions collected
 All positions for attribute number 13 is :
 Done 1 class - sending to generator
 
-LR entries
-[[1]=[[I@7cc355be, [I@6e8cf4c6], [2]=[[I@12edcd21], [3]=[[I@34c45dca, [I@52cc8049, [I@5b6f7412], [4]=[[I@27973e9b], [5]=[[I@312b1dae], [6]=[[I@7530d0a], [7]=[], [8]=[[I@27bc2616], [9]=[], [10]=[], [11]=[], [12]=[[I@3941a79c, [I@506e1b77], [13]=[]]
-Generator started for class 1
+Generator started for 1
 For attribute number [1] Ranges are: 
 [10, 22]
 [24, 42]
@@ -139,13 +150,408 @@ For attribute number [12] Ranges are:
 For attribute number [13] Ranges are: 
 Apriori started
 Attribute number 1 is being processed
-Exception in thread "main" java.lang.NullPointerException
-	at java.util.LinkedList.addAll(LinkedList.java:408)
-	at java.util.LinkedList.addAll(LinkedList.java:387)
-	at java.util.LinkedList.<init>(LinkedList.java:119)
-	at Tools.Generator.aPriori(Generator.java:56)
+keySet after key 1 is removed
+[2]
+[3]
+[4]
+[5]
+[6]
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+Now pairing attr (key) ranges 1 to attr (key) ranges 2
+Now pairing [10, 22] with [19, 113]
+Now pairing [24, 42] with [19, 113]
+A combined range for [[1], [2]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 3
+Now pairing [10, 22] with [0, 16]
+Now pairing [10, 22] with [84, 110]
+Now pairing [10, 22] with [131, 149]
+Now pairing [24, 42] with [0, 16]
+Now pairing [24, 42] with [84, 110]
+Now pairing [24, 42] with [131, 149]
+A combined range for [[1], [2], [3]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 4
+Now pairing [10, 22] with [0, 108]
+Now pairing [24, 42] with [0, 108]
+A combined range for [[1], [2], [3], [4]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 5
+Now pairing [10, 22] with [50, 82]
+Now pairing [24, 42] with [50, 82]
+A combined range for [[1], [2], [3], [4], [5]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 6
+Now pairing [10, 22] with [12, 34]
+Now pairing [24, 42] with [12, 34]
+A combined range for [[1], [2], [3], [4], [5], [6]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 7
+A combined range for [[1], [2], [3], [4], [5], [6], [7]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 8
+Now pairing [10, 22] with [0, 110]
+Now pairing [24, 42] with [0, 110]
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 9
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8], [9]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 10
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 11
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 12
+Now pairing [10, 22] with [5, 19]
+Now pairing [10, 22] with [22, 74]
+Now pairing [24, 42] with [5, 19]
+Now pairing [24, 42] with [22, 74]
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+[10, 22]
+[5, 19]
+[10, 22]
+[22, 74]
+[24, 42]
+[5, 19]
+[24, 42]
+[22, 74]
+generatedCR is being appened
+Now pairing attr (key) ranges 1 to attr (key) ranges 13
+A combined range for [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13]] is 
+[10, 22]
+[19, 113]
+[24, 42]
+[19, 113]
+[10, 22]
+[0, 16]
+[10, 22]
+[84, 110]
+[10, 22]
+[131, 149]
+[24, 42]
+[0, 16]
+[24, 42]
+[84, 110]
+[24, 42]
+[131, 149]
+[10, 22]
+[0, 108]
+[24, 42]
+[0, 108]
+[10, 22]
+[50, 82]
+[24, 42]
+[50, 82]
+[10, 22]
+[12, 34]
+[24, 42]
+[12, 34]
+[10, 22]
+[0, 110]
+[24, 42]
+[0, 110]
+[10, 22]
+[5, 19]
+[10, 22]
+[22, 74]
+[24, 42]
+[5, 19]
+[24, 42]
+[22, 74]
+generatedCR is being appened
+Generated done
+Exception in thread "main" java.lang.ClassCastException: java.util.LinkedList cannot be cast to [I
+	at Tools.Generator.aPriori(Generator.java:108)
 	at Tools.Generator.<init>(Generator.java:30)
-	at Tools.Analyser.lambda$0(Analyser.java:83)
+	at Tools.Analyser.lambda$0(Analyser.java:81)
 	at java.util.HashMap$KeySet.forEach(HashMap.java:932)
 	at Tools.Analyser.maxMin(Analyser.java:31)
 	at Tools.Analyser.<init>(Analyser.java:27)

@@ -20,9 +20,9 @@ public class Generator {
         this.classTag = classTag;
         this.allTuple = allTuple;
         this.allClassMap = allClassMap;
-        System.out.println("Generator started for class " + this.classTag);
+        System.out.println("Generator started for " + this.classTag);
         for (Object key : LR.keySet()) {
-        	System.out.println("For attribute number " + (LinkedList<Integer>) key+ " Ranges are: ");
+        	System.out.println("For attribute number " + (LinkedList<Integer>) key + " Ranges are: ");
         	for (int[] aPosRange : LR.get(key)) {
         		System.out.println(Arrays.toString(aPosRange));
         	}
@@ -37,39 +37,44 @@ public class Generator {
        
     	LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> tempLR = new LinkedHashMap<>(LR);
         
-        for (Object aKey : new ArrayList<Object>(tempLR.keySet())) {
-        	LinkedList<Integer> aKeyList = (LinkedList<Integer>) aKey;
-        	// Would getFirst() work for next iteration?
-        	int key = (Integer) aKeyList.getFirst();
+        for (Object k : new ArrayList<Object>(tempLR.keySet())) {
         	LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> generatedCRMap = new LinkedHashMap<>();
-        	Object aPoppedKey = key;
-        	System.out.println("Attribute number " + (Integer) aPoppedKey + " is being processed");
+        	LinkedList<Integer> aKey = (LinkedList<Integer>) k;
+        	// Would getFirst() work for next iteration? - need change
+        	Integer aPoppedKey = (Integer) aKey.getFirst();
+        	
+        	System.out.println("Attribute number " + aPoppedKey + " is being processed");
         	// get combined key (integer array)
-        	// set combined key 0 = popped key
+        	// set combined key [0] = popped key
         	// CHANGE I TO BE DYNAMIC PLEEEEES
-        	LinkedList<Integer> aCombinedKey = new LinkedList<Integer>();
-        	aCombinedKey.add((Integer) aPoppedKey);
+        	LinkedList<LinkedList<Integer>> aCombinedKey = new LinkedList<>();
+        	aCombinedKey.add(aKey);
+        	
     		// get combined range (linked list of linked list of float)
+        	// get popped key's ranges before delete
     		LinkedList<LinkedList<int[]>> combinedRange = new LinkedList<>();
+    		LinkedList<int[]> poppedKeyRange = new LinkedList<>(tempLR.get(k));
     		
-    		// get popped key's ranges before delete
-    		LinkedList<int[]> poppedKeyRange = new LinkedList<>(tempLR.get(aPoppedKey));
-    		tempLR.keySet().remove(aPoppedKey);
-    		System.out.println("keySet after key " + (Integer) aPoppedKey + " is removed");
+    		tempLR.keySet().remove(k);
+    		System.out.println("keySet after key " + aPoppedKey + " is removed");
+    		
     		for (Object postKey : tempLR.keySet()) {
-    			System.out.println((Integer) postKey);
+    			System.out.println((LinkedList<Integer>) postKey);
     		}
     		
     		// for each remaining key range
-    		for (Object remainingKey : tempLR.keySet()) {
-    			System.out.println("Now pairing attr (key) ranges " + (Integer) aPoppedKey + " to attr (key) ranges " + (Integer) remainingKey);
-    			// set combined key 1 = remaining key
-				aCombinedKey.add((Integer) remainingKey);
+    		for (Object k2 : tempLR.keySet()) {
+    			LinkedList<Integer> aKey2 = (LinkedList<Integer>) k2;
+    			Integer aRemainingKey = (Integer) aKey2.getFirst();
+    			
+    			// set combined key [1] = remaining key
+    			System.out.println("Now pairing attr (key) ranges " + aPoppedKey + " to attr (key) ranges " + aRemainingKey);
+				aCombinedKey.add(aKey2);
 				
 				// for each popped key range
-    			 for (int[] aPoppedKeyRange : poppedKeyRange) {
+    			for (int[] aPoppedKeyRange : poppedKeyRange) {
     				// for each range in remaining key
-    				for (int[] aRemainingKeyRange : tempLR.get(remainingKey)) {
+    				for (int[] aRemainingKeyRange : tempLR.get(k2)) {
     					// get a 'combined' range
     					System.out.println("Now pairing " + Arrays.toString(aPoppedKeyRange) + " with " + Arrays.toString(aRemainingKeyRange));
     					LinkedList<int[]> aCombinedRange = new LinkedList<>();
@@ -77,7 +82,9 @@ public class Generator {
     					aCombinedRange.add(aRemainingKeyRange);
     					
     					// CHECKER BEFORE ACCEPTED
-    	    			 new AnalyserGen(allTuple, allClassMap, aCombinedKey, aCombinedRange, classTag);
+    					// THIS CONTAINS BAD RECURSIVE CALLS
+    					System.out.println("AnalyserGen started");
+    	    			new AnalyserGen(allTuple, allClassMap, aCombinedKey, aCombinedRange, classTag);
     	    			 
     					// add combined range to big combined range list
     					combinedRange.add(aCombinedRange);

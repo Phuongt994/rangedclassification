@@ -78,8 +78,6 @@ public class Analyser {
             binaryConvert(classTag, allAttributeMap, LR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            System.out.println("LR entries");
-            System.out.println(LR.entrySet());
             new Generator(classTag, LR, allTuple, allClassMap);
         });
     }
@@ -124,7 +122,7 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    public void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    protected void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
     	// what is LR for in next iteration?
         // System.out.println("Size of biList: " + binaryList.size() + " for attr number " + attributeNumber);
         int currentMax = 0;
@@ -154,9 +152,10 @@ public class Analyser {
         }
         
         // checker 
+        System.out.println("checkThresh() started");
         checkThresh(allPosition, binaryList, attributeNumberList);
-
     }
+    
     /***
      * Check for threshold 
      * AFTER maxsum
@@ -202,8 +201,8 @@ public class Analyser {
     	return allAttributeMap;
     }
     
-    public LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> resetLR() {
-    	LR.clear();
-    	return LR;
-    }
+//    public LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> resetLR() {
+//    	LR.clear();
+//    	return LR;
+//    }
 }
