@@ -59,7 +59,8 @@ public class Scanners {
             reportScan();
             
             // Pass tuples and hashmap to Analyser
-            new Analyser(allTuple, allClassMap);
+            Analyser ana = new Analyser(allTuple, allClassMap);
+            ana.maxMin();
             
         }
         catch (FileNotFoundException fe) {

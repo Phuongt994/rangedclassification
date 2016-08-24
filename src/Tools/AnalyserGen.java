@@ -6,19 +6,19 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 public class AnalyserGen extends Analyser {
-	private LinkedHashMap<Integer, LinkedList<LinkedList>> allAttributeMap;
+	private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap;
 	private LinkedList<LinkedList<Integer>> aCombinedKey;
 	private LinkedList<int[]> aCombinedRange;
 	private String classTag;
 	
-	public AnalyserGen(LinkedList<LinkedList> allTuple, HashMap allClassMap, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<int[]> aCombinedRange, String classTag) {
+	public AnalyserGen(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<int[]> aCombinedRange, String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap) {
 		super(allTuple, allClassMap);
 		// TODO Auto-generated constructor stub
-		this.allAttributeMap = getAllAttributeMap();
+		this.allAttributeMap = allAttributeMap;
 		this.aCombinedKey = aCombinedKey;
 		this.aCombinedRange = aCombinedRange; // this only concerns 2 ranges: int[] R1 and int[] R2 or however big this loop is
 		this.classTag = classTag;
-		System.out.println("adjustRange started?");
+		System.out.println("adjustRange started");
 		adjustRange(this.aCombinedKey, this.aCombinedRange);
 	}
 	
@@ -36,6 +36,8 @@ public class AnalyserGen extends Analyser {
 		LinkedHashSet allCommonTupleSet = new LinkedHashSet<LinkedList>();
 		for (int i = 0; i < aCombinedRange.size(); i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
+			System.out.println("aKey val: " + aKey);
+		 
 			int[] aRange = aCombinedRange.get(i);	
 			for (int j = aRange[0]; j < aRange[i]+1; j++) {
 				allCommonTupleSet.add(allAttributeMap.get(aKey).get(j));
@@ -55,6 +57,11 @@ public class AnalyserGen extends Analyser {
 		
 	}
 	
+	/***
+	 * ERROR-FILLED PART
+	 * Which one to use for binaryList, alltuple or commontuple?
+	 * @param allCommonTupleSet
+	 */
 	private void binaryConvert(LinkedHashSet<LinkedList<LinkedList>> allCommonTupleSet) {
 		// change hashset to linkedlist for easier execution
 		LinkedList<LinkedList> allCommonTupleList = new LinkedList<LinkedList>(allCommonTupleSet);
@@ -77,8 +84,9 @@ public class AnalyserGen extends Analyser {
 			}
 		}
 		
+		// maxSUM NOT CALLED YET
 		LinkedList<Integer> keyLL = new LinkedList<>(keyS);
-		//maxSum(keyLL, binaryList, LR);
+		// super.maxSum(keyLL, binaryList, LR);
 	}
 	
 	private void checkThresh() {

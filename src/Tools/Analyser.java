@@ -16,30 +16,31 @@ public class Analyser {
 	 */
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
     private LinkedList<LinkedList> allTuple;
-    private LinkedHashMap<Integer, LinkedList<LinkedList>> allAttributeMap;
+    private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap;
     private LinkedList<Float> attributeValue;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR;
 
-    public Analyser(LinkedList<LinkedList> allTuple, HashMap allClassMap) {
-        this.allTuple = new LinkedList<>();
+    public Analyser(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
         this.allTuple = allTuple;
-        this.allClassMap = new HashMap<>(allClassMap);
-        maxMin(this.allClassMap);
+        this.allClassMap = allClassMap;
+//        maxMin(this.allClassMap);
     }
     
-    private void maxMin(HashMap<String, LinkedList<LinkedList>> allClassMap) {
-        allClassMap.keySet().forEach(k -> {
+    protected void maxMin() {
+        this.allClassMap.keySet().forEach(k -> {
             String classTag = k;
             int attributeCount = 0;
 
             System.out.println("------------------------");
             System.out.println("For class " + classTag);
-
+            
             allAttributeMap = new LinkedHashMap<>();
 
             // for each attribute
             for (int i = 1; i < allClassMap.get(k).get(0).size() - 1; i++) {
             	int attributeNumber = i;
+            	LinkedList<Integer> attributeNumberList = new LinkedList<>();
+            	attributeNumberList.add(i);
                 attributeValue = new LinkedList<>();
                 allClassMap.get(k).stream().forEach(t -> {
                     attributeValue.add((Float) t.get(attributeNumber));
@@ -64,7 +65,7 @@ public class Analyser {
                 // append to attribute map aM
                 // add Range as first item in attrRangedTuple?
                 attributeRangedTuple.addFirst(attributeRange);
-                allAttributeMap.put(attributeNumber, attributeRangedTuple);
+                allAttributeMap.put(attributeNumberList, attributeRangedTuple);
 
             }
             System.out.println("Attr count : " + attributeCount);
@@ -78,19 +79,21 @@ public class Analyser {
             binaryConvert(classTag, allAttributeMap, LR);
 
             System.out.println("Done 1 class - sending to generator\n");
-            new Generator(classTag, LR, allTuple, allClassMap);
+            new Generator(classTag, LR, allTuple, allClassMap, allAttributeMap);
         });
     }
 
-    private void binaryConvert(String classTag, LinkedHashMap<Integer, LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    private void binaryConvert(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
         // DO WE NEED CLONE?
-        LinkedHashMap<Integer, LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
+        LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
 
         for (Object key : tempAttributeMap.keySet()) {
-            int attributeNumber = (int) key;
+  
+        	LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
+        	int attributeNumber = attributeNumberList.getFirst();
             // Do we need the range?
             // Range is removed with removeFirst()
             tempAttributeMap.get(key).removeFirst();
@@ -112,8 +115,6 @@ public class Analyser {
             System.out.println("Converted binary list for attribute no. " + attributeNumber + ": " + binaryList);
             
             // put attr number in list instead of integer to prepare for next iteration
-            LinkedList attributeNumberList = new LinkedList<Integer>();
-            attributeNumberList.add(attributeNumber);
             maxSum(attributeNumberList, binaryList, LR);
         };
     }
@@ -153,14 +154,14 @@ public class Analyser {
         
         // checker 
         System.out.println("checkThresh() started");
-        checkThresh(allPosition, binaryList, attributeNumberList);
+        checkThresh(allPosition, binaryList, attributeNumberList, LR);
     }
     
     /***
      * Check for threshold 
      * AFTER maxsum
      */
-    private void checkThresh(LinkedList<int[]> allPosition, LinkedList<Integer> binaryList, LinkedList<Integer> attributeNumberList) {
+    private void checkThresh(LinkedList<int[]> allPosition, LinkedList<Integer> binaryList, LinkedList<Integer> attributeNumberList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
     	System.out.println("Checking all positions collected");
     	LinkedList<int[]> CR = new LinkedList<>();
     	for (int[] currentPosition : allPosition) {
@@ -197,7 +198,7 @@ public class Analyser {
         LR.put(attributeNumberList, CR);
     }
     
-    public LinkedHashMap<Integer, LinkedList<LinkedList>> getAllAttributeMap() {
+    protected LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> getAllAttributeMap() { // NOT NEEDED AS IT DID NOT WORK
     	return allAttributeMap;
     }
     
