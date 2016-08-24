@@ -88,22 +88,21 @@ public class Analyser {
 
         // create a clone hashmap
         // DO WE NEED CLONE?
-        LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> tempAttributeMap = new LinkedHashMap<>(allAttributeMap);
 
-        for (Object key : tempAttributeMap.keySet()) {
+        for (Object key : allAttributeMap.keySet()) {
   
         	LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
         	int attributeNumber = attributeNumberList.getFirst();
             // Do we need the range?
             // Range is removed with removeFirst()
-            tempAttributeMap.get(key).removeFirst();
+        	allAttributeMap.get(key).removeFirst();
             Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
-            tempAttributeMap.get(key).sort(comp);
+            allAttributeMap.get(key).sort(comp);
             // System.out.println("Sorted map by attr no. : " + (attributeNumber) + " || "  + tempAttributeMap.get(key));
 
             // create a temp binary list
             LinkedList<Integer> binaryList = new LinkedList<>();
-            tempAttributeMap.get(key).stream().forEach(tuple -> {
+            allAttributeMap.get(key).stream().forEach(tuple -> {
                 // append 1 and -1 into an array for max sum solution
                 if (tuple.getLast().equals(classTag)) {
                     binaryList.add(1);
@@ -126,6 +125,9 @@ public class Analyser {
     protected void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
     	// what is LR for in next iteration?
         // System.out.println("Size of biList: " + binaryList.size() + " for attr number " + attributeNumber);
+    	System.out.println("attributeNumberList" + attributeNumberList);
+    	System.out.println("binaryList" + binaryList);
+    	
         int currentMax = 0;
         int[] currentPosition = {0, 0};
         boolean prevSumIsPositive = false;
@@ -151,7 +153,10 @@ public class Analyser {
             	prevSumIsPositive = false;
             }
         }
-        
+        System.out.println("allPosition");
+        for (int[] li : allPosition) {
+        	System.out.println(Arrays.toString(li));
+        }
         // checker 
         System.out.println("checkThresh() started");
         checkThresh(allPosition, binaryList, attributeNumberList, LR);
