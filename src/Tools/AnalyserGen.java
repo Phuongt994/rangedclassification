@@ -63,11 +63,11 @@ public class AnalyserGen extends Analyser {
 		System.out.println("aCombinedTupleSet" + aCombinedTupleSet);
 		System.out.println("aMutualTupleSet" + aMutualTupleSet);
 		
-//		boolean densityChecker = densityCheck(aMutualTupleSet, aCombinedTupleSet);
-//		if (densityChecker == true) {
-//			System.out.println("Range accepted for density, proceed to binaryConvert");
-			// binaryConvert(aCombinedTupleSet);
-//		} 		
+		boolean densityChecker = densityCheck(aMutualTupleSet, aCombinedTupleSet);
+		if (densityChecker == true) {
+			System.out.println("Range accepted for density, proceed to binaryConvert");
+			binaryConvert(aMutualTupleSet);
+		} 		
 	}
 	
 	private boolean densityCheck(LinkedHashSet<LinkedList> aMutualTupleSet, LinkedHashSet<LinkedList> aCombinedTupleSet) {		
@@ -84,10 +84,12 @@ public class AnalyserGen extends Analyser {
 	
 	/***
 	 * ERROR-FILLED PART
-	 * Which one to use for binaryList, alltuple or commontuple?
+	 * Use mutualTupleSet
+	 * will use a new AttributeMap
+	 * 
 	 * @param aCombinedTupleSet
 	 */
-	private void binaryConvert(LinkedHashSet<LinkedList> aCombinedTupleSet) {
+	private void binaryConvert(LinkedHashSet<LinkedList> aMutualTupleSet) {
 		// change hashset to linkedlist for easier execution
 	
 		// LinkedList<LinkedList> allCommonTupleList = new LinkedList<LinkedList>(aCombinedTupleSet);
@@ -95,7 +97,7 @@ public class AnalyserGen extends Analyser {
 		// prepare binary list
 		LinkedList<Integer> binaryList = new LinkedList<>();
 		
-		for (LinkedList tuple : aCombinedTupleSet) {
+		for (LinkedList tuple : aMutualTupleSet) {
 			if ((tuple.getLast()).equals(classTag)) {
 				binaryList.add(1);
 			} else {
