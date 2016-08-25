@@ -123,6 +123,11 @@ public class Generator {
     				System.out.println("Null range");
     			}
     		}
+    		
+    		// modify allAttributeMap == generatedCRMap
+    		// ERROR FILLED
+    		//allAttributeMap.clear();
+    		//allAttributeMap = generatedCRMap;
         }
         
         

@@ -21,7 +21,7 @@ public class AnalyserGen extends Analyser {
 		this.aCombinedKey = aCombinedKey;
 		this.aCombinedRange = aCombinedRange; // this only concerns 2 ranges: int[] R1 and int[] R2 or however big this loop is
 		this.classTag = classTag;
-		System.out.println("adjustRange started");
+		System.out.println("\nadjustRange started");
 		adjustRange(this.aCombinedKey, this.aCombinedRange);
 	}
 	
@@ -35,47 +35,67 @@ public class AnalyserGen extends Analyser {
 		// but wont cope well with multiple attributes
 		// so a HashSet will do
 		
-		LinkedHashSet<LinkedList> allCommonTupleSet = new LinkedHashSet<>();
+		// HashSet to get all combined tuples
 		
-		for (int i = 0; i < aCombinedRange.size(); i++) {
+		LinkedHashSet<LinkedList> aCombinedTupleSet = new LinkedHashSet<>();
+		LinkedHashSet<LinkedList> aMutualTupleSet = new LinkedHashSet<>();
+		
+		for (int i = 0; i < 2; i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
+			
 			System.out.println("aKey val: " + aKey);
-		 
+
 			int[] aRange = aCombinedRange.get(i);
 			System.out.println("aKey range: " + Arrays.toString(aRange));
-			for (int j = aRange[0]; j < aRange[i]+1; j++) {
-				allCommonTupleSet.add(allAttributeMap.get(aKey).get(j));
-//				for (Object key : allAttributeMap.keySet()) {
-//					int mapKey = (int) key;
-//					if (aKey == mapKey) {
-//						allCommonTupleSet.add(allAttributeMap.get(key).get(j));
-//					}
-//				}
+			for (int j = aRange[0]; j <= aRange[1]; j++) {
+				if (i == 0) {
+					aCombinedTupleSet.add(allAttributeMap.get(aKey).get(j));
+				} else {
+					if (aCombinedTupleSet.contains(allAttributeMap.get(aKey).get(j))) {
+						aMutualTupleSet.add(allAttributeMap.get(aKey).get(j));
+					} 
+					aCombinedTupleSet.add(allAttributeMap.get(aKey).get(j));
+				}
 			}
 		}
+
 		
-		System.out.println(allCommonTupleSet);
+		System.out.println("aCombinedTupleSet" + aCombinedTupleSet);
+		System.out.println("aMutualTupleSet" + aMutualTupleSet);
 		
-		System.out.println("binaryConvert overriden started");
-		binaryConvert(allCommonTupleSet);
-		// send hashset to binaryConvert
-		// override binaryConvert
+//		boolean densityChecker = densityCheck(aMutualTupleSet, aCombinedTupleSet);
+//		if (densityChecker == true) {
+//			System.out.println("Range accepted for density, proceed to binaryConvert");
+			// binaryConvert(aCombinedTupleSet);
+//		} 		
+	}
+	
+	private boolean densityCheck(LinkedHashSet<LinkedList> aMutualTupleSet, LinkedHashSet<LinkedList> aCombinedTupleSet) {		
+		Float density = (float) aMutualTupleSet.size() /  aCombinedTupleSet.size();
+		System.out.println("Density value : " + density);
 		
+		if (density >= 0.6) {
+			System.out.println("Accepted");
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/***
 	 * ERROR-FILLED PART
 	 * Which one to use for binaryList, alltuple or commontuple?
-	 * @param allCommonTupleSet
+	 * @param aCombinedTupleSet
 	 */
-	private void binaryConvert(LinkedHashSet<LinkedList> allCommonTupleSet) {
+	private void binaryConvert(LinkedHashSet<LinkedList> aCombinedTupleSet) {
 		// change hashset to linkedlist for easier execution
 	
-		// LinkedList<LinkedList> allCommonTupleList = new LinkedList<LinkedList>(allCommonTupleSet);
+		// LinkedList<LinkedList> allCommonTupleList = new LinkedList<LinkedList>(aCombinedTupleSet);
 	
 		// prepare binary list
 		LinkedList<Integer> binaryList = new LinkedList<>();
-		for (LinkedList tuple : allCommonTupleSet) {
+		
+		for (LinkedList tuple : aCombinedTupleSet) {
 			if ((tuple.getLast()).equals(classTag)) {
 				binaryList.add(1);
 			} else {
@@ -94,8 +114,7 @@ public class AnalyserGen extends Analyser {
 		}
 		
 		LinkedList<Integer> keyLL = new LinkedList<>(keyS);
-    	System.out.println("attributeNumberList (keyLL)" + keyLL.toString());
-    	System.out.println("binaryList" + binaryList);
+		System.out.println("maxSum 2nd round started");
 		maxSum(keyLL, binaryList, LR);
 	}
 	

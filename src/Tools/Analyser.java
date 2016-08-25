@@ -40,7 +40,8 @@ public class Analyser {
             for (int i = 1; i < allClassMap.get(k).get(0).size() - 1; i++) {
             	int attributeNumber = i;
             	LinkedList<Integer> attributeNumberList = new LinkedList<>();
-            	attributeNumberList.add(i);
+            	attributeNumberList.add(attributeNumber);
+            	
                 attributeValue = new LinkedList<>();
                 allClassMap.get(k).stream().forEach(t -> {
                     attributeValue.add((Float) t.get(attributeNumber));
@@ -65,6 +66,7 @@ public class Analyser {
                 // append to attribute map aM
                 // add Range as first item in attrRangedTuple?
                 attributeRangedTuple.addFirst(attributeRange);
+                System.out.println("attributeNumberList " + attributeNumberList);
                 allAttributeMap.put(attributeNumberList, attributeRangedTuple);
 
             }
@@ -90,8 +92,9 @@ public class Analyser {
         // DO WE NEED CLONE?
 
         for (Object key : allAttributeMap.keySet()) {
-  
+        	
         	LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
+        	// IS IT GETFIRST??
         	int attributeNumber = attributeNumberList.getFirst();
             // Do we need the range?
             // Range is removed with removeFirst()
@@ -200,12 +203,17 @@ public class Analyser {
     	for (int[] p : CR) {
     		System.out.println(Arrays.toString(p));
     	}
-        LR.put(attributeNumberList, CR);
+    	LR.put(attributeNumberList, CR);
+    	//finalCheck(attributeNumberList, CR, LR);
     }
     
-    protected LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> getAllAttributeMap() { // NOT NEEDED AS IT DID NOT WORK
-    	return allAttributeMap;
+    protected void finalCheck(LinkedList<Integer> attributeNumberList, LinkedList<int[]> CR, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    	if (attributeNumberList.size() == 1) {
+    		LR.put(attributeNumberList, CR);
+    	} 
     }
+    
+  
     
 //    public LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> resetLR() {
 //    	LR.clear();
