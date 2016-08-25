@@ -86,7 +86,6 @@ public class AnalyserGen extends Analyser {
 	 * ERROR-FILLED PART
 	 * Use mutualTupleSet
 	 * will use a new AttributeMap
-	 * 
 	 * @param aCombinedTupleSet
 	 */
 	private void binaryConvert(LinkedHashSet<LinkedList> aMutualTupleSet) {
