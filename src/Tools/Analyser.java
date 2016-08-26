@@ -18,7 +18,7 @@ public class Analyser {
     private LinkedList<LinkedList> allTuple;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap;
     private LinkedList<Float> attributeValue;
-    private LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR;
+    private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> LR;
 
     public Analyser(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
         this.allTuple = allTuple;
@@ -76,7 +76,7 @@ public class Analyser {
             /***
              * LR? CR?
              */
-            LR = new LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>>();
+            LR = new LinkedHashMap<>();
             // LinkedList CR = new LinkedList<LinkedList<Float>>();
             binaryConvert(classTag, allAttributeMap, LR);
 
@@ -85,7 +85,7 @@ public class Analyser {
         });
     }
 
-    private void binaryConvert(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    private void binaryConvert(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> LR) {
         System.out.println("\nbiConvert() for class " + classTag);
 
         // create a clone hashmap
@@ -117,7 +117,12 @@ public class Analyser {
             System.out.println("Converted binary list for attribute no. " + attributeNumber + ": " + binaryList);
             
             // put attr number in list instead of integer to prepare for next iteration
-            maxSum(attributeNumberList, binaryList, LR);
+            LinkedList<int[]> allPosition = new LinkedList<>();
+            allPosition = maxSum(attributeNumberList, binaryList, LR);
+            
+            // call thresholdCheck()
+            thresholdCheck(allPosition, binaryList, attributeNumberList, LR);
+ 
         };
     }
 
@@ -125,7 +130,7 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    protected void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    protected LinkedList<int[]> maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> LR) {
     	// what is LR for in next iteration?
         // System.out.println("Size of biList: " + binaryList.size() + " for attr number " + attributeNumber);
     	System.out.println("attributeNumberList" + attributeNumberList);
@@ -160,18 +165,18 @@ public class Analyser {
         for (int[] li : allPosition) {
         	System.out.println(Arrays.toString(li));
         }
-        // checker 
-        System.out.println("checkThresh() started");
-        checkThresh(allPosition, binaryList, attributeNumberList, LR);
+        
+        // return allPosition
+        return allPosition;
     }
     
     /***
      * Check for threshold 
      * AFTER maxsum
      */
-    private void checkThresh(LinkedList<int[]> allPosition, LinkedList<Integer> binaryList, LinkedList<Integer> attributeNumberList, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
+    protected void thresholdCheck(LinkedList<int[]> allPosition, LinkedList<Integer> binaryList, LinkedList<Integer> attributeNumberList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> LR) {
     	System.out.println("Checking all positions collected");
-    	LinkedList<int[]> CR = new LinkedList<>();
+    	LinkedList<int[]> candidateRangeList = new LinkedList<>();
     	for (int[] currentPosition : allPosition) {
     		// for support
 	    	float support = (float) (currentPosition[1] - currentPosition[0]) / binaryList.size();
@@ -196,27 +201,16 @@ public class Analyser {
 	        	System.out.println("Range " + Arrays.toString(currentPosition) + " is accepted");
 	        	System.out.println("Support: " + support);
 	        	System.out.println("Confidence: " + confidence);
-	        	CR.add(currentPosition);
+	        	candidateRangeList.add(currentPosition);
 	        }
     	}
-    	System.out.println("All positions for attribute number " + attributeNumberList.get(0) + " is :");
-    	for (int[] p : CR) {
+    	System.out.println("All positions for attribute number " + attributeNumberList + " is :");
+    	for (int[] p : candidateRangeList) {
     		System.out.println(Arrays.toString(p));
     	}
+    	
+    	LinkedList<LinkedList<int[]>> CR = new LinkedList<>();
+    	CR.add(candidateRangeList);
     	LR.put(attributeNumberList, CR);
-    	//finalCheck(attributeNumberList, CR, LR);
     }
-    
-    protected void finalCheck(LinkedList<Integer> attributeNumberList, LinkedList<int[]> CR, LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR) {
-    	if (attributeNumberList.size() == 1) {
-    		LR.put(attributeNumberList, CR);
-    	} 
-    }
-    
-  
-    
-//    public LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> resetLR() {
-//    	LR.clear();
-//    	return LR;
-//    }
 }

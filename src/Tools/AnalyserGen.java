@@ -13,6 +13,7 @@ public class AnalyserGen extends Analyser {
 	private LinkedList<LinkedList<Integer>> aCombinedKey;
 	private LinkedList<int[]> aCombinedRange;
 	private String classTag;
+	private boolean rejectedRange;
 	
 	public AnalyserGen(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<int[]> aCombinedRange, String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap) {
 		super(allTuple, allClassMap);
@@ -21,7 +22,7 @@ public class AnalyserGen extends Analyser {
 		this.aCombinedKey = aCombinedKey;
 		this.aCombinedRange = aCombinedRange; // this only concerns 2 ranges: int[] R1 and int[] R2 or however big this loop is
 		this.classTag = classTag;
-		System.out.println("\nadjustRange started");
+		System.out.println("adjustRange started");
 		adjustRange(this.aCombinedKey, this.aCombinedRange);
 	}
 	
@@ -42,7 +43,7 @@ public class AnalyserGen extends Analyser {
 		
 		for (int i = 0; i < 2; i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
-			
+
 			System.out.println("aKey val: " + aKey);
 
 			int[] aRange = aCombinedRange.get(i);
@@ -53,8 +54,9 @@ public class AnalyserGen extends Analyser {
 				} else {
 					if (aCombinedTupleSet.contains(allAttributeMap.get(aKey).get(j))) {
 						aMutualTupleSet.add(allAttributeMap.get(aKey).get(j));
-					} 
-					aCombinedTupleSet.add(allAttributeMap.get(aKey).get(j));
+					} else {
+						aCombinedTupleSet.add(allAttributeMap.get(aKey).get(j));
+					}
 				}
 			}
 		}
@@ -65,19 +67,22 @@ public class AnalyserGen extends Analyser {
 		
 		boolean densityChecker = densityCheck(aMutualTupleSet, aCombinedTupleSet);
 		if (densityChecker == true) {
-			System.out.println("Range accepted for density, proceed to binaryConvert");
 			binaryConvert(aMutualTupleSet);
-		} 		
+		} else {
+			System.out.println("Rejected");
+		}
 	}
 	
 	private boolean densityCheck(LinkedHashSet<LinkedList> aMutualTupleSet, LinkedHashSet<LinkedList> aCombinedTupleSet) {		
 		Float density = (float) aMutualTupleSet.size() /  aCombinedTupleSet.size();
 		System.out.println("Density value : " + density);
 		
-		if (density >= 0.6) {
+		if (density >= 0.2) {
 			System.out.println("Accepted");
+			rejectedRange = false;
 			return true;
 		} else {
+			rejectedRange = true;
 			return false;
 		}
 	}
@@ -105,8 +110,8 @@ public class AnalyserGen extends Analyser {
 		}
 		
 
-		// don't know what to do with LR yet..
-		LinkedHashMap<LinkedList<Integer>, LinkedList<int[]>> LR = new LinkedHashMap<>();
+		// What's LR for?
+		LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<int[]>>> LR = new LinkedHashMap<>();
 		LinkedHashSet<Integer> keyS = new LinkedHashSet<>();
 		for (LinkedList<Integer> k : aCombinedKey) {
 			for (Integer keyInt : k) {
@@ -116,11 +121,20 @@ public class AnalyserGen extends Analyser {
 		
 		LinkedList<Integer> keyLL = new LinkedList<>(keyS);
 		System.out.println("maxSum 2nd round started");
-		maxSum(keyLL, binaryList, LR);
+		LinkedList<int[]> allPosition = new LinkedList<>();
+		allPosition = maxSum(keyLL, binaryList, LR);
+		
+		// attributeNumberList can't be null : need to change key type to attr no list type
+		// temp list for now
+		LinkedList<Integer> attributeNumberList = new LinkedList<>();
+		attributeNumberList.add(aCombinedKey.get(0).get(0));
+		attributeNumberList.add(aCombinedKey.get(1).get(0));
+		
+		thresholdCheck(allPosition, binaryList, attributeNumberList, LR);
 	}
 	
-	private void checkThresh() {
-		System.out.println("Replaced");
+	protected boolean getRejectedRange() {
+		return rejectedRange;
 	}
-	
+
 }
