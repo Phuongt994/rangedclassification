@@ -67,7 +67,7 @@ public class Generator {
     					
     					// initialise analyserGen
     					System.out.println("AnalyserGen started");
-    					AnalyserGen analyser = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, attributeRangeMap, attributeTupleMap);
+    					// AnalyserGen analyser = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, attributeRangeMap, attributeTupleMap);
     					
     					// ongoing
     				}
