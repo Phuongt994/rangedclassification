@@ -9,21 +9,25 @@ import java.util.LinkedList;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class AnalyserGen extends Analyser {
-	private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap;
-	private LinkedList<LinkedList<Integer>> aCombinedKey;
-	private LinkedList<int[]> aCombinedRange;
+	private HashMap<String, LinkedList<LinkedList>> allClassMap;
+	private LinkedList<LinkedList> allTuple;
 	private String classTag;
-	private boolean rejectedRange;
+	private LinkedList<LinkedList<Integer>> aCombinedKey;
+	private LinkedList<Float[]> aCombinedRange;
+	private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap;
+	private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap;
 	
-	public AnalyserGen(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<int[]> aCombinedRange, String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList>> allAttributeMap) {
+	
+	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<Float[]> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
 		super(allTuple, allClassMap);
 		// TODO Auto-generated constructor stub
-		this.allAttributeMap = allAttributeMap;
-		this.aCombinedKey = aCombinedKey;
-		this.aCombinedRange = aCombinedRange; // this only concerns 2 ranges: int[] R1 and int[] R2 or however big this loop is
 		this.classTag = classTag;
-		System.out.println("adjustRange started");
-		adjustRange(this.aCombinedKey, this.aCombinedRange);
+		this.aCombinedKey = aCombinedKey;
+		this.aCombinedRange = aCombinedRange;
+		this.attributeRangeMap = attributeRangeMap;
+		this.attributeTupleMap = attributeTupleMap;
+		
+		// adjustRange(this.aCombinedKey, this.aCombinedRange);
 	}
 	
 	/***
@@ -133,8 +137,5 @@ public class AnalyserGen extends Analyser {
 		thresholdCheck(allPosition, binaryList, attributeNumberList, LR);
 	}
 	
-	protected boolean getRejectedRange() {
-		return rejectedRange;
-	}
 
 }
