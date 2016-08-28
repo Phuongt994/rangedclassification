@@ -93,15 +93,18 @@ public class Analyser {
      * @param attributeTupleMap
      */
     private void binaryConvert(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
-    	this.attributeRangeMap = attributeRangeMap;
-    	this.attributeTupleMap = attributeTupleMap;
-        for (Object key : this.attributeRangeMap.keySet()) {
+    	
+    	// clone tuple map
+    	// then reset tuple map
+    	LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMapClone = new LinkedHashMap<>(this.attributeTupleMap);
+    	attributeTupleMap.clear();
+        for (Object key : attributeRangeMap.keySet()) {
         	
         	LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
-        	int attributeNumber = attributeNumberList.getFirst();        	
+        	Integer attributeNumber = attributeNumberList.getFirst();        	
         	
         	// for each range of attribute
-        	attributeRangeMap.get(key).stream().forEach(range -> {
+        	this.attributeRangeMap.get(key).stream().forEach(range -> {
         		System.out.println("A range : " + Arrays.toString(range));
         		
         		// to dodge key map conflict
@@ -111,11 +114,11 @@ public class Analyser {
    
             	// sort tuple by ascending order of its range
                 Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
-                this.attributeTupleMap.get(aRangeList).sort(comp);
+                attributeTupleMapClone.get(aRangeList).sort(comp);
 
                 // create a temp binary list
                 LinkedList<Integer> binaryList = new LinkedList<>();
-                this.attributeTupleMap.get(aRangeList).stream().forEach(tuple -> {
+                attributeTupleMapClone.get(aRangeList).stream().forEach(tuple -> {
                     // append 1 and -1 into an array for max sum solution
                     if (tuple.getLast().equals(classTag)) {
                         binaryList.add(1);
@@ -136,7 +139,7 @@ public class Analyser {
                 
                 // call appendToMap()
                 // no return (yet?)
-                appendToMap(attributeRangeList, attributeNumberList);
+                appendToMap(attributeRangeList, aRangeList, attributeNumberList);
      
         	});
         }
@@ -243,7 +246,7 @@ public class Analyser {
     	return attributeRangeList;
     }
     
-    private void appendToMap(LinkedList<Float[]> attributeRangeList, LinkedList<Integer> attributeNumberList) {
+    private void appendToMap(LinkedList<Float[]> attributeRangeList, LinkedList<Float[]> aRangeList, LinkedList<Integer> attributeNumberList) {
     	// for first iteration
     	if (attributeNumberList.size() == 1) {
     		
