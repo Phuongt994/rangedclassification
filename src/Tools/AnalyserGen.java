@@ -1,12 +1,9 @@
 package Tools;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class AnalyserGen extends Analyser {
 	private HashMap<String, LinkedList<LinkedList>> allClassMap;
@@ -27,15 +24,14 @@ public class AnalyserGen extends Analyser {
 		this.attributeRangeMap = attributeRangeMap;
 		this.attributeTupleMap = attributeTupleMap;
 		
-		// adjustRange(this.aCombinedKey, this.aCombinedRange);
+		adjustRange();
+	}
+
+	
+	private void adjustRange() {
+		
 	}
 }
-	
-//	/***
-//	 * get tuples within cRange within cKey
-//	 * check which tuple lies in both ranges
-//	 * those are not will be eliminated!!
-//	 */
 //	private void adjustRange(LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<int[]> aCombinedRange) {
 //		// could get a loop through each 
 //		// but wont cope well with multiple attributes

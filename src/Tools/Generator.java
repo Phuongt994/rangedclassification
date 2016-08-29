@@ -20,8 +20,8 @@ public class Generator {
         this.attributeTupleMap = attributeTupleMap;
         
         System.out.println("Generator started for " + this.classTag);
-        System.out.println("attributeRangeMap :" + attributeRangeMap);
-        System.out.println("attributeTupleMap :" + attributeTupleMap);
+        System.out.println("attributeRangeMap :" + this.attributeRangeMap);
+        System.out.println("attributeTupleMap :" + this.attributeTupleMap);
         
         aPriori();     
         // recursive for next iteration
@@ -41,10 +41,10 @@ public class Generator {
     		
     		attributeRangeMap.keySet().remove(key1);
     		
-    		System.out.println("keySet after key " + aPoppedKey + " is removed");
-    		for (Object postKey : attributeRangeMap.keySet()) {
-    			System.out.print((LinkedList<Integer>) postKey);
-    		}
+//    		System.out.println("keySet after key " + aPoppedKey + " is removed");
+//    		for (Object postKey : attributeRangeMap.keySet()) {
+//    			System.out.print((LinkedList<Integer>) postKey);
+//    		}
     		
     		// initialise combined key
     		LinkedList<LinkedList<Integer>> aCombinedKey = new LinkedList<>();
@@ -53,23 +53,35 @@ public class Generator {
     		for (Float[] aPoppedKeyRange : aPoppedKeyRangeList) {
     			
     			// for each remaining key
+    			// check if remaining key is join-able
     			for (Object key2 : attributeRangeMap.keySet()) {
-    				LinkedList<Integer> aRemainingKey = (LinkedList<Integer>) key2;
-    				aCombinedKey.add(aRemainingKey);
-    	        	System.out.println("Now pairing attr (key) ranges " + aCombinedKey.getFirst() + " to attr (key) ranges " + aRemainingKey.getLast());
     				
-    				// for each range in each remaining key
-    				for (Float[] aRemainingKeyRange : attributeRangeMap.get(key2)) {
-        				// initialise combined range
-        	    		LinkedList<Float[]> aCombinedRange = new LinkedList<>();
-        	    		aCombinedRange.add(aPoppedKeyRange);
-    					aCombinedRange.add(aRemainingKeyRange);
+    				LinkedList<Integer> aRemainingKey = (LinkedList<Integer>) key2;
+    				
+    				if (aPoppedKey.size() == 1) {
     					
-    					// initialise analyserGen
-    					System.out.println("AnalyserGen started");
-    					// AnalyserGen analyser = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, attributeRangeMap, attributeTupleMap);
-    					
-    					// ongoing
+    					aCombinedKey.add(aRemainingKey);
+	    	        	System.out.println("Now pairing attr (key) ranges " + aCombinedKey.getFirst() + " to attr (key) ranges " + aRemainingKey.getLast()); // change this for 3rd+ iteration
+	    	        	
+	    	        	
+	    				// for each range in each remaining key
+	    				for (Float[] aRemainingKeyRange : attributeRangeMap.get(key2)) {
+	  
+	        	    		LinkedList<Float[]> aCombinedRange = new LinkedList<>();
+	        	    		aCombinedRange.add(aPoppedKeyRange);
+	    					aCombinedRange.add(aRemainingKeyRange);
+	    					
+	    					// initialise analyserGen
+	    					System.out.println("AnalyserGen started");
+	    					AnalyserGen analyserGen = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, attributeRangeMap, attributeTupleMap);
+	    					
+	    					// ongoing
+	    				}
+    				} else {
+    					// for 2nd iteration onwards
+    					if (aPoppedKey.getFirst() == aRemainingKey.getFirst() && aPoppedKey.getFirst() < aRemainingKey.getLast()) {
+    	    				aCombinedKey.add(aRemainingKey);
+    					}
     				}
     			}
     		}
