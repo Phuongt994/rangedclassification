@@ -72,6 +72,8 @@ public class Generator {
 	    					aCombinedRange.add(aRemainingKeyRange);
 	    					
 	    					// initialise analyserGen
+	    					// with new (empty) range and tuple map
+
 	    					System.out.println("AnalyserGen started");
 	    					AnalyserGen analyserGen = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, attributeRangeMap, attributeTupleMap);
 	    					
