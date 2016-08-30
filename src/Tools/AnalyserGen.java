@@ -13,6 +13,9 @@ public class AnalyserGen extends Analyser {
 	private LinkedList<Float[]> aCombinedRange;
 	private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap;
 	private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap;
+	private LinkedList<Float[]> newCombinedRange;
+	private LinkedList<Integer> newCombinedKey;
+	private LinkedList<LinkedList> aMutualTupleList;
 		
 	
 	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<Float[]> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
@@ -29,7 +32,7 @@ public class AnalyserGen extends Analyser {
 	private void preset() {
 		
 		LinkedHashSet<LinkedList> aCombinedTupleSet = new LinkedHashSet<>();
-		LinkedList<LinkedList> aMutualTupleList = new LinkedList<>();
+		aMutualTupleList = new LinkedList<>();
 		
 		for (int i = 0; i < 2; i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
@@ -60,16 +63,20 @@ public class AnalyserGen extends Analyser {
 		
 		if (density >= 0.2) {
 			System.out.println("Density accepted");
-			
-			// prepare new combined key
-			LinkedList<Integer> aCombinedKeyList = new LinkedList<>();
-			aCombinedKeyList.add(aCombinedKey.getFirst().get(0));
-			aCombinedKeyList.add(aCombinedKey.getLast().get(0));
+			if (aCombinedKey.size() <= 2) {
+				// prepare new combined key
+				newCombinedKey = new LinkedList<>();
+				newCombinedKey.addAll(aCombinedKey.getFirst());
+				newCombinedKey.addAll(aCombinedKey.getLast());
+			} else {
+				// for 2nd+ iteration
+				// NOT DECIDED YET
+			}
 			
 			// append to a NEW range and tuple map
 			attributeRangeMap.clear();
 			attributeTupleMap.clear();
-			attributeRangeMap.put(aCombinedKeyList, aCombinedRange);
+			attributeRangeMap.put(newCombinedKey, aCombinedRange);
 			attributeTupleMap.put(aCombinedRange, aMutualTupleList);
 			
 			System.out.println(attributeRangeMap);
@@ -77,10 +84,24 @@ public class AnalyserGen extends Analyser {
 			
 			// proceed to binaryConvert()
 			binaryConvert(classTag, attributeRangeMap, attributeTupleMap);
+			newCombinedRange = new LinkedList<>(getAttributeRangeList());
+			System.out.println(newCombinedRange);
 			
 		} else {
 			System.out.println("Density rejected");
 		}
+	}
+	
+	protected LinkedList<Float[]> getNewCombinedRange() {
+		return newCombinedRange;
+	}
+	
+	protected LinkedList<Integer> getNewCombinedKey() {
+		return newCombinedKey;
+	}
+	
+	protected LinkedList<LinkedList> getNewMutualTupleList() {
+		return aMutualTupleList;
 	}
 }
 

@@ -7,17 +7,12 @@ import java.util.stream.Collectors;
  * Created by phuongt994 on 28/06/2016.
  */
 public class Analyser {
-	/***
-	 * allTuple : map classified by class
-	 * allTuple : all tuple 
-	 * allAttributeMap : attribute-sorted map 
-	 * attributeValue : attribute values
-	 * LR : ??
-	 */
+	
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
     private LinkedList<LinkedList> allTuple;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap;
     private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap;
+    private LinkedList<Float[]> attributeRangeList;
 
     public Analyser(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
         this.allTuple = allTuple;
@@ -130,12 +125,12 @@ public class Analyser {
     				// call maxsum
     				// return a list of positions           
     				LinkedList<int[]> attributePosition = new LinkedList<>();
-    				attributePosition = maxSum(attributeNumberList, binaryList);
+    				attributePosition = maxSum(attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
 
     				// call thresholdCheck()
     				// return a list of float ranges
     				LinkedList<Float[]> attributeRangeList = new LinkedList<>();
-    				attributeRangeList = thresholdCheck(attributePosition, attributeNumberList, binaryList);
+    				attributeRangeList = thresholdCheck(attributePosition, attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
 
     				// call appendToMap()
     				// no return (yet?)
@@ -167,16 +162,15 @@ public class Analyser {
     		// call maxsum
     		// return a list of positions           
     		LinkedList<int[]> attributePosition = new LinkedList<>();
-    		attributePosition = maxSum((LinkedList<Integer>) key, binaryList);
+    		attributePosition = maxSum((LinkedList<Integer>) key, binaryList, attributeRangeMap, attributeTupleMap);
 
     		// call thresholdCheck()
     		// return a list of float ranges
     		LinkedList<Float[]> attributeRangeList = new LinkedList<>();
-    		attributeRangeList = thresholdCheck(attributePosition, (LinkedList<Integer>) key, binaryList);
+    		attributeRangeList = thresholdCheck(attributePosition, (LinkedList<Integer>) key, binaryList, attributeRangeMap, attributeTupleMap);
 
-    		// call appendToMap()
-    		// no return (yet?)
-    		appendToMap(attributeRangeList, (LinkedList<Integer>) key);
+    		// NO append to map in 2nd+ iteration
+    		// appendToMap(attributeRangeList, (LinkedList<Integer>) key);
     		
     	};
     }
@@ -185,7 +179,8 @@ public class Analyser {
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    protected LinkedList<int[]> maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList) {
+    protected LinkedList<int[]> maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
+    	System.out.println("attributeNumberList " + attributeNumberList);
     	System.out.println("binaryList" + binaryList);
     	
         int currentMax = 0;
@@ -198,6 +193,9 @@ public class Analyser {
             if (currentMax >= 0) {
             	currentPosition[1] = i;
             	prevSumIsPositive = true;
+            	if (i == binaryList.size() -1) {
+            		attributePosition.add(currentPosition.clone());
+            	}
             } else {
             	if (prevSumIsPositive == true) {
             		currentPosition[1] = i;
@@ -207,7 +205,7 @@ public class Analyser {
             	currentPosition[1] = i+1;
             	currentMax = 0;
             	prevSumIsPositive = false;
-            }
+           }
         }
         
         System.out.println("allPosition");
@@ -218,7 +216,7 @@ public class Analyser {
     }
     
 
-    protected LinkedList<Float[]> thresholdCheck(LinkedList<int[]> attributePosition, LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList) {
+    protected LinkedList<Float[]> thresholdCheck(LinkedList<int[]> attributePosition, LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
     	System.out.println("Checking all positions collected");
     	LinkedList<int[]> attributeCheckedPosition = new LinkedList<>();
     	
@@ -252,7 +250,7 @@ public class Analyser {
 	        }
     	}
     	
-    	LinkedList<Float[]> attributeRangeList = new LinkedList<>();
+    	attributeRangeList = new LinkedList<>();
     	 
     	System.out.println("All positions for attribute number after check is :");
     	for (int[] position : attributeCheckedPosition) {
@@ -272,8 +270,19 @@ public class Analyser {
     			System.out.println("A position (range converted) " + Arrays.toString(range));
     			attributeRangeList.add(range);
     		} else {
-    			// 2nd iteration onwards
-    			// undecided
+    			// for 2nd+ iteration
+    			// get mutual key then separate it into individual key
+    			LinkedList<Float[]> convertedMapKey = attributeRangeMap.get(attributeNumberList);
+    			
+    			for (int attributeNumber : attributeNumberList) {
+    				Float[] aRange = new Float[2];
+    				aRange[0] = (Float) attributeTupleMap.get(convertedMapKey).get(position[0]).get(attributeNumber);
+    				aRange[1] = (Float) attributeTupleMap.get(convertedMapKey).get(position[1]).get(attributeNumber);
+    				attributeRangeList.add(aRange);
+
+    			}
+    			
+    			System.out.println("New key: " + attributeNumberList + " & new range : " + attributeRangeList);
     		}
     	}
     	return attributeRangeList;
@@ -312,4 +321,8 @@ public class Analyser {
     	
     }
     
+    protected LinkedList<Float[]> getAttributeRangeList() {
+    	return attributeRangeList;
+    }
+     
 }
