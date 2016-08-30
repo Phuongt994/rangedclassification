@@ -66,7 +66,6 @@ public class Analyser {
                 attributeTupleMap.put(attributeRangeList, attributeRangeTupleList);
             }
             
-            System.out.println("For class 1: ");
             System.out.println("attributeRangeMap" + attributeRangeMap.entrySet());
             System.out.println("attributeTupleMap" + attributeTupleMap.entrySet());
             
@@ -240,7 +239,7 @@ public class Analyser {
 	        
 	        // conditions
 	        // support & confidence check
-	        if (support > 0.1 && confidence > 0.3) { 
+	        if (support > 0.5 && confidence > 0.5) { 
 	        	System.out.println("Range " + Arrays.toString(currentPosition) + " is accepted");
 	        	System.out.println("Support: " + support);
 	        	System.out.println("Confidence: " + confidence);
