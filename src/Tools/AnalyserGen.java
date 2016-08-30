@@ -10,15 +10,15 @@ public class AnalyserGen extends Analyser {
 	private LinkedList<LinkedList> allTuple;
 	private String classTag;
 	private LinkedList<LinkedList<Integer>> aCombinedKey;
-	private LinkedList<Float[]> aCombinedRange;
-	private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap;
-	private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap;
-	private LinkedList<Float[]> newCombinedRange;
+	private LinkedList<LinkedList<Float[]>> aCombinedRange;
+	private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
+	private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
+	private LinkedList<LinkedList<Float[]>> newCombinedRange;
 	private LinkedList<Integer> newCombinedKey;
 	private LinkedList<LinkedList> aMutualTupleList;
 		
 	
-	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<Float[]> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
+	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<Float[]>> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
 		super(allTuple, allClassMap);
 		this.classTag = classTag;
 		this.aCombinedKey = aCombinedKey;
@@ -37,9 +37,9 @@ public class AnalyserGen extends Analyser {
 		for (int i = 0; i < 2; i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
 			
-			Float[] aRange = aCombinedRange.get(i);
+			LinkedList<Float[]> aRange = aCombinedRange.get(i);
 			
-			LinkedList<Float[]> aRangeList = new LinkedList<>();
+			LinkedList<LinkedList<Float[]>> aRangeList = new LinkedList<>();
 			aRangeList.add(aRange);
 			
 			for (LinkedList<LinkedList> tuple : attributeTupleMap.get(aRangeList)) {
@@ -97,7 +97,7 @@ public class AnalyserGen extends Analyser {
 		}
 	}
 	
-	protected LinkedList<Float[]> getNewCombinedRange() {
+	protected LinkedList<LinkedList<Float[]>> getNewCombinedRange() {
 		return newCombinedRange;
 	}
 	

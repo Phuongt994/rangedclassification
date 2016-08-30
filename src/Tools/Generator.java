@@ -11,12 +11,12 @@ import java.util.LinkedList;
  */
 public class Generator {
     private String classTag;
-    private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap;
-    private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap;
-    private LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> newAttributeRangeMap;
-    private LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> newAttributeTupleMap;
+    private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
+    private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
+    private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> newAttributeRangeMap;
+    private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> newAttributeTupleMap;
 
-    public Generator(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<Float[]>> attributeRangeMap, LinkedHashMap<LinkedList<Float[]>, LinkedList<LinkedList>> attributeTupleMap) {
+    public Generator(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
         this.classTag = classTag;
         this.attributeRangeMap = attributeRangeMap;
         this.attributeTupleMap = attributeTupleMap;
@@ -92,12 +92,12 @@ public class Generator {
 	    			System.out.println("attributeRangeMap " + attributeRangeMap);
 	    			System.out.println("attributeTupleMap " + attributeTupleMap);
 	    			
-	    			for (Float[] range1 : attributeRangeMap.get(key1)) {
+	    			for (LinkedList<Float[]> range1 : attributeRangeMap.get(key1)) {
 	
 	    				// for each range in each remaining key
-	    				for (Float[] range2 : attributeRangeMap.get(key2)) {
+	    				for (LinkedList<Float[]> range2 : attributeRangeMap.get(key2)) {
 	
-	    					LinkedList<Float[]> aCombinedRange = new LinkedList<>();
+	    					LinkedList<LinkedList<Float[]>> aCombinedRange = new LinkedList<>();
 	    					aCombinedRange.add(range1);
 	    					aCombinedRange.add(range2);
 	
@@ -110,7 +110,7 @@ public class Generator {
 	    					AnalyserGen analyserGen = new AnalyserGen(null, null, classTag, aCombinedKey, aCombinedRange, (LinkedHashMap) attributeRangeMap.clone(), (LinkedHashMap) attributeTupleMap.clone());
 	    					if (analyserGen.getNewCombinedRange() != null) {
 	    						// grab new combo from analyserGen
-	    						LinkedList<Float[]> newCombinedRange = new LinkedList<>(analyserGen.getNewCombinedRange());
+	    						LinkedList<LinkedList<Float[]>> newCombinedRange = new LinkedList<>(analyserGen.getNewCombinedRange());
 	    						LinkedList<Integer> newCombinedKey = new LinkedList<>(analyserGen.getNewCombinedKey());
 	    						LinkedList<LinkedList> newMutualTupleList = new LinkedList<>(analyserGen.getNewMutualTupleList());
 	    						System.out.println("New combined range for " + newCombinedKey + " is " + newCombinedRange);
@@ -132,6 +132,6 @@ public class Generator {
     	System.out.println("New attributeTupleMap for class : " + classTag + " is " + attributeTupleMap);
     
     	// call new generator for next iteration here
-    	// new Generator(classTag, newAttributeRangeMap, newAttributeTupleMap);
+    	new Generator(classTag, newAttributeRangeMap, newAttributeTupleMap);
     }
 }
