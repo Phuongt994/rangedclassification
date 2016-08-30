@@ -63,14 +63,19 @@ public class AnalyserGen extends Analyser {
 		
 		if (density >= 0.2) {
 			System.out.println("Density accepted");
-			if (aCombinedKey.size() <= 2) {
+			if (aCombinedKey.get(0).size() < 2) {
 				// prepare new combined key
 				newCombinedKey = new LinkedList<>();
 				newCombinedKey.addAll(aCombinedKey.getFirst());
 				newCombinedKey.addAll(aCombinedKey.getLast());
 			} else {
 				// for 2nd+ iteration
-				// NOT DECIDED YET
+				LinkedHashSet<Integer> combinedKeySet = new LinkedHashSet<>();
+				for (LinkedList<Integer> key : aCombinedKey) {
+					combinedKeySet.addAll(key);
+				}
+				newCombinedKey = new LinkedList<>();
+				newCombinedKey.addAll(combinedKeySet);
 			}
 			
 			// append to a NEW range and tuple map

@@ -80,17 +80,17 @@ public class Generator {
 					} else {
 						// for 2nd+ iteration
 						// not yet decided (sample code below)
-						// if (aPoppedKey.getFirst() == aRemainingKey.getFirst() && aPoppedKey.getFirst() < aRemainingKey.getLast()) {
-						// 	aCombinedKey.add(aRemainingKey);
-						// }
+						LinkedList<Integer> key1List = new LinkedList<>((LinkedList<Integer>) key1);
+						LinkedList<Integer> key2List = new LinkedList<>((LinkedList<Integer>) key2);
+					
+						 if (key1List.getFirst() == key2List.getFirst() && key1List.getFirst() < key2List.getLast()) {
+						 	aCombinedKey.add(key1List);
+						 	aCombinedKey.add(key2List);
+						 }
 					}
 					
-	
-
 	    			System.out.println("attributeRangeMap " + attributeRangeMap);
 	    			System.out.println("attributeTupleMap " + attributeTupleMap);
-	    			
-	    			
 	    			
 	    			for (Float[] range1 : attributeRangeMap.get(key1)) {
 	
@@ -125,10 +125,13 @@ public class Generator {
 	    		}
     			
     		}
-    	
-    	System.out.println("New attributeRangeMap for class : " + classTag + " is : " + newAttributeRangeMap);
-    	System.out.println("New attributeTupleMap for class : " + classTag + " is : " + newAttributeTupleMap);
     	}
+    	
+    	System.out.println("New attributeRangeMap for class : " + classTag + " is " + attributeRangeMap);
+    
+    	System.out.println("New attributeTupleMap for class : " + classTag + " is " + attributeTupleMap);
+    
     	// call new generator for next iteration here
+    	// new Generator(classTag, newAttributeRangeMap, newAttributeTupleMap);
     }
 }
