@@ -10,15 +10,15 @@ public class AnalyserGen extends Analyser {
 	private LinkedList<LinkedList> allTuple;
 	private String classTag;
 	private LinkedList<LinkedList<Integer>> aCombinedKey;
-	private LinkedList<LinkedList<Float[]>> aCombinedRange;
+	private LinkedList<LinkedList<LinkedList<Float[]>>> aCombinedRange;
 	private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
 	private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
-	private LinkedList<LinkedList<Float[]>> newCombinedRange;
 	private LinkedList<Integer> newCombinedKey;
 	private LinkedList<LinkedList> aMutualTupleList;
+	private LinkedList<LinkedList<Float[]>> newCombinedRange;
 		
 	
-	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<Float[]>> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
+	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<LinkedList<Float[]>>> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
 		super(allTuple, allClassMap);
 		this.classTag = classTag;
 		this.aCombinedKey = aCombinedKey;
@@ -30,19 +30,16 @@ public class AnalyserGen extends Analyser {
 	}
 
 	private void preset() {
-		
+
 		LinkedHashSet<LinkedList> aCombinedTupleSet = new LinkedHashSet<>();
 		aMutualTupleList = new LinkedList<>();
-		
-		for (int i = 0; i < 2; i++) {
+			
+		for (int i = 0; i < aCombinedKey.size(); i++) {
 			LinkedList<Integer> aKey = aCombinedKey.get(i);
-			
-			LinkedList<Float[]> aRange = aCombinedRange.get(i);
-			
-			LinkedList<LinkedList<Float[]>> aRangeList = new LinkedList<>();
-			aRangeList.add(aRange);
-			
-			for (LinkedList<LinkedList> tuple : attributeTupleMap.get(aRangeList)) {
+
+			LinkedList<LinkedList<Float[]>> aRange = aCombinedRange.get(i);
+
+			for (LinkedList<LinkedList> tuple : attributeTupleMap.get(aRange)) {
 				if (i == 0) {
 					aCombinedTupleSet.add(tuple);
 				} else {
@@ -54,7 +51,8 @@ public class AnalyserGen extends Analyser {
 			}
 		}
 		
-		densityCheck(aCombinedTupleSet, aMutualTupleList);
+	densityCheck(aCombinedTupleSet, aMutualTupleList);
+	
 	}
 
 	private void densityCheck(LinkedHashSet<LinkedList> aCombinedTupleSet, LinkedList<LinkedList> aMutualTupleList) {
@@ -78,17 +76,25 @@ public class AnalyserGen extends Analyser {
 				newCombinedKey.addAll(combinedKeySet);
 			}
 			
+			
+			// prepare new combined range
+			newCombinedRange = new LinkedList<>();
+			newCombinedRange = aCombinedRange.getFirst();
+			newCombinedRange.addAll(aCombinedRange.getLast());
+			
 			// append to a NEW range and tuple map
 			attributeRangeMap.clear();
 			attributeTupleMap.clear();
-			attributeRangeMap.put(newCombinedKey, aCombinedRange);
-			attributeTupleMap.put(aCombinedRange, aMutualTupleList);
+			attributeRangeMap.put(newCombinedKey, newCombinedRange);
+			attributeTupleMap.put(newCombinedRange, aMutualTupleList);
 			
 			System.out.println(attributeRangeMap);
 			System.out.println(attributeTupleMap);
 			
 			// proceed to binaryConvert()
 			binaryConvert(classTag, attributeRangeMap, attributeTupleMap);
+			
+			// after all is done
 			newCombinedRange = new LinkedList<>(getAttributeRangeList());
 			System.out.println(newCombinedRange);
 			
