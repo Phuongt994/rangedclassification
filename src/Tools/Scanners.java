@@ -59,7 +59,7 @@ public class Scanners {
             reportScan();
             
             // Pass tuples and hashmap to Analyser
-            Analyser analyser = new Analyser(allTuple, allClassMap);
+            Analyser1 analyser = new Analyser1(allTuple, allClassMap);
             analyser.maxMin(allClassMap);
             
         }

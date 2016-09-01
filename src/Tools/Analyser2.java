@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-public class AnalyserGen extends Analyser {
+public class Analyser2 extends Analyser1 {
 	private HashMap<String, LinkedList<LinkedList>> allClassMap;
 	private LinkedList<LinkedList> allTuple;
 	private String classTag;
@@ -18,7 +18,7 @@ public class AnalyserGen extends Analyser {
 	private LinkedList<LinkedList<Float[]>> newCombinedRange;
 		
 	
-	public AnalyserGen(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<LinkedList<Float[]>>> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
+	public Analyser2(HashMap<String, LinkedList<LinkedList>> allClassMap,	 LinkedList<LinkedList> allTuple, String classTag, LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<LinkedList<Float[]>>> aCombinedRange, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
 		super(allTuple, allClassMap);
 		this.classTag = classTag;
 		this.aCombinedKey = aCombinedKey;
@@ -30,7 +30,9 @@ public class AnalyserGen extends Analyser {
 	}
 
 	private void preset() {
-
+		// move null tuple check to here
+		//
+		
 		LinkedHashSet<LinkedList> aCombinedTupleSet = new LinkedHashSet<>();
 		aMutualTupleList = new LinkedList<>();
 			

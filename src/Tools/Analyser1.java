@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 /**
  * Created by phuongt994 on 28/06/2016.
  */
-public class Analyser {
+public class Analyser1 {
 	
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
     private LinkedList<LinkedList> allTuple;
@@ -14,7 +14,7 @@ public class Analyser {
     private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
     private LinkedList<LinkedList<Float[]>> attributeRangeList;
 
-    public Analyser(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
+    public Analyser1(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
         this.allTuple = allTuple;
         this.allClassMap = allClassMap;
     }
@@ -60,7 +60,11 @@ public class Analyser {
                     }
                 });
                 
+                Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
+				attributeRangeTupleList.sort(comp);
+				
                 // append attributeRangeMap
+				// convert rangelist to rangelist-list to fit class type
                 LinkedList<LinkedList<Float[]>> attributeRangeList2 = new LinkedList<>();
                 attributeRangeList2.add(attributeRangeList);
                 attributeRangeMap.put(attributeNumberList, attributeRangeList2);
@@ -74,10 +78,11 @@ public class Analyser {
         
             System.out.println("Class " + classTag + " now sent to binaryConvert()");
             binaryConvert(classTag, attributeRangeMap, attributeTupleMap);
-
-            System.out.println("Done 1 class - sending to generator\n");
+            
             System.out.println("attributeRangeMap" + attributeRangeMap.entrySet());
             System.out.println("attributeTupleMap" + attributeTupleMap.entrySet());
+            System.out.println("Done 1 class - sending to generator\n");
+            
             new Generator(classTag, attributeRangeMap, attributeTupleMap);
         });
     }
@@ -89,98 +94,38 @@ public class Analyser {
      * @param attributeTupleMap
      */
     protected void binaryConvert(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
-    	
-    	if (attributeRangeMap.keySet().size() > 1) {
-    	// for 1st iteration
 
-    		for (Object key : attributeRangeMap.keySet()) {
+    	for (Object key : attributeRangeMap.keySet()) {
 
-    			LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
-    			Integer attributeNumber = attributeNumberList.getFirst();        	
-    			System.out.println("For attribute number " + attributeNumber);
-    			// for each range of attribute
-    			System.out.println((attributeRangeMap.get(key)).size());
+    		LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
 
-    			attributeRangeMap.get(key).stream().forEach(rangeList -> {
-    				
-    				System.out.println("A range : " + Arrays.toString(rangeList.getFirst()));
+    		System.out.println("For attribute " + attributeNumberList);
 
-    				// to dodge key map conflict
-    				LinkedList<LinkedList<Float[]>> rangeList2 = new LinkedList<>();
-    				rangeList2.add(rangeList);
-    				// sort tuple by ascending order of its range
-    				Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
-    				attributeTupleMap.get(rangeList2).sort(comp);
+    		// for each range of attribute
 
-    				// create a temp binary list
-    				LinkedList<Integer> binaryList = new LinkedList<>();
-    				attributeTupleMap.get(rangeList2).stream().forEach(tuple -> {
-    					// append 1 and -1 into an array for max sum solution
-    					if (tuple.getLast().equals(classTag)) {
-    						binaryList.add(1);
-    					} else {
-    						binaryList.add(-1);
-    					}
-    				});
+    		LinkedList<LinkedList<Float[]>> rangeList = new LinkedList<>(attributeRangeMap.get(key));
 
-    				// call maxsum
-    				// return a list of positions           
-    				LinkedList<int[]> attributePosition = new LinkedList<>();
-    				attributePosition = maxSum(attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
+    		// create a temp binary list
+    		LinkedList<Integer> binaryList = new LinkedList<>();
+    		attributeTupleMap.get(rangeList).stream().forEach(tuple -> {
+    			// append 1 and -1 into an array for max sum solution
+    			if (tuple.getLast().equals(classTag)) {
+    				binaryList.add(1);
+    			} else {
+    				binaryList.add(-1);
+    			}
+    		});
 
-    				// call thresholdCheck()
-    				// return a list of float ranges
-    				LinkedList<LinkedList<Float[]>> attributeRangeList = new LinkedList<>();
-    				attributeRangeList = thresholdCheck(attributePosition, attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
+    		maxSum(attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
 
-    				// call appendToMap()
-    				// no return (yet?)
-    				appendToMap(attributeRangeList, attributeNumberList);
-    			});
-    		}
-
-    	} else {
-    	// for 2nd+ iteration
-    		// get the (one) combo key
-	        Object key = attributeRangeMap.keySet().toArray()[0];
-	        
-	        // get the (one) combo range
-	        LinkedList<LinkedList<Float[]>> aCombinedRange = new LinkedList<>(attributeRangeMap.get(key));
-	        
-	        System.out.println("A range : " + aCombinedRange);
-	        
-	        LinkedList<Integer> binaryList = new LinkedList<>();
-	        attributeTupleMap.get(aCombinedRange).stream().forEach(tuple -> {
-	        	if (tuple.getLast().equals(classTag)) {
-	        		binaryList.add(1);
-	        	} else {
-	        		binaryList.add(-1);
-	        	}
-	        });
-	        
-	        // WHAT CAN BE DONE FOR NEXT ITERATION?
-	        
-    		// call maxsum
-    		// return a list of positions           
-    		LinkedList<int[]> attributePosition = new LinkedList<>();
-    		attributePosition = maxSum((LinkedList<Integer>) key, binaryList, attributeRangeMap, attributeTupleMap);
-
-    		// call thresholdCheck()
-    		// return a list of float ranges
-    		LinkedList<LinkedList<Float[]>> attributeRangeList = new LinkedList<>();
-    		attributeRangeList = thresholdCheck(attributePosition, (LinkedList<Integer>) key, binaryList, attributeRangeMap, attributeTupleMap);
-
-    		// NO append to map in 2nd+ iteration
-    		// appendToMap(attributeRangeList, (LinkedList<Integer>) key);
-    		
-    	};
+    	}
     }
 
     /**
      * Original method from Kadane's algorithm
      * @param biList a list of 1 or -1 for max sum calculation
      */
-    protected LinkedList<int[]> maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
+    protected void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
     	System.out.println("attributeNumberList " + attributeNumberList);
     	System.out.println("binaryList" + binaryList);
     	
@@ -212,12 +157,14 @@ public class Analyser {
         System.out.println("allPosition");
         for (int[] position : attributePosition) {
         	System.out.println("A position: " + Arrays.toString(position));
-        }      
-        return attributePosition;
+        }     
+        
+        // call checker
+        checkThreshold(attributePosition, attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
     }
     
 
-    protected LinkedList<LinkedList<Float[]>> thresholdCheck(LinkedList<int[]> attributePosition, LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap2, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap2) {
+    protected void checkThreshold(LinkedList<int[]> attributePosition, LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
     	System.out.println("Checking all positions collected");
     	LinkedList<int[]> attributeCheckedPosition = new LinkedList<>();
     	
@@ -251,6 +198,12 @@ public class Analyser {
 	        }
     	}
     	
+    	// call converter
+    	convertPositionToRange(attributeCheckedPosition, attributeNumberList, attributeRangeMap, attributeTupleMap);
+    }
+    
+    private void convertPositionToRange(LinkedList<int[]> attributeCheckedPosition,LinkedList<Integer> attributeNumberList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
+    	
     	attributeRangeList = new LinkedList<>();
     	 
     	System.out.println("All positions for attribute number after check is :");
@@ -258,76 +211,62 @@ public class Analyser {
     		System.out.println("A position: " + Arrays.toString(position));
 
     		// convert position to numerical equivalence
-    		// different for different iteration
-    		if (attributeNumberList.size() == 1) {
-    			// if 1st iteration
-    			int attributeNumber = attributeNumberList.getFirst();
-    			Float[] range = new Float[2];
-    			
-    			// convert values.. map conflict
-    			LinkedList<LinkedList<Float[]>> convertedMapKey = attributeRangeMap2.get(attributeNumberList);
-    			range[0] = (Float) attributeTupleMap2.get(convertedMapKey).get(position[0]).get(attributeNumber);
-    			range[1] = (Float) attributeTupleMap2.get(convertedMapKey).get(position[1]).get(attributeNumber);
-    			System.out.println("A position (range converted) " + Arrays.toString(range));
-    			LinkedList<Float[]> rangeList = new LinkedList<>();
-    			rangeList.add(range);
-    			attributeRangeList.add(rangeList);
-    		} else {
-    			// for 2nd+ iteration
-    			// get mutual key then separate it into individual key
-    			LinkedList<LinkedList<Float[]>> convertedMapKey = attributeRangeMap2.get(attributeNumberList);
-    			
-    			for (int attributeNumber : attributeNumberList) {
-    				Float[] aRange = new Float[2];
-    				aRange[0] = (Float) attributeTupleMap2.get(convertedMapKey).get(position[0]).get(attributeNumber);
-    				aRange[1] = (Float) attributeTupleMap2.get(convertedMapKey).get(position[1]).get(attributeNumber);
-    				LinkedList<Float[]> rangeList = new LinkedList<>();
-        			rangeList.add(aRange);
-        			attributeRangeList.add(rangeList);
+    		// convert values
+    		// get key of rangeMap to get its value
+    		// use this value as key to tupleMap to retrieve its value
+    		// use retrieved tuple value to convert position to range
 
-    			}
-    			
-    			System.out.println("New key: " + attributeNumberList + " & new range : " + attributeRangeList);
-    		}
-    	}
-    	return attributeRangeList;
-    }
-    
-    private void appendToMap(LinkedList<LinkedList<Float[]>> attributeRangeList3, LinkedList<Integer> attributeNumberList) {
-    	// for first iteration
-    	if (attributeNumberList.size() == 1) {
+    		LinkedList<LinkedList<Float[]>> convertedMapKey = attributeRangeMap.get(attributeNumberList);
     		
-	    	// append tuple map
-	    	int attributeNumber = attributeNumberList.get(0);
-	    	for (LinkedList<Float[]> rangeList : attributeRangeList3) {
-	    		
-	    		LinkedList<LinkedList> attributeTupleList = new LinkedList<>();
-	    		
-	    		// convert key
-	    		LinkedList<LinkedList<Float[]>> convertedKey = new LinkedList<>(attributeRangeMap.get(attributeNumberList));
-	    			    		
-	    		attributeTupleMap.get(convertedKey).stream().forEach(tuple -> {
-	    			Float[] range = new Float[2];
-	    			range = rangeList.getFirst();
-	    			
-	    			if (range[0] <= (float) tuple.get(attributeNumber) && (float) tuple.get(attributeNumber) <= range[1]) {
-	    				attributeTupleList.add(tuple);
-	    			}
-	    		});
-	    		LinkedList<LinkedList<Float[]>> rangeList2 = new LinkedList<>();
-	    		rangeList2.add(rangeList);
-	    		attributeTupleMap.put(rangeList2, attributeTupleList);
-	    	}
-
-	    	// append range map
-	    	attributeRangeMap.put(attributeNumberList, attributeRangeList3);
-	    	
-    	} else {
-    		//for 2nd iteration onwards
-    		// undecided
-    		// MAY NOT BE NEEDED
+    		LinkedList<Float[]> rangeList = new LinkedList<>();
+    		for (Integer attributeNumber : attributeNumberList) {
+    			Float[] range = new Float[2];
+    			range[0] = (Float) attributeTupleMap.get(convertedMapKey).get(position[0]).get(attributeNumber);
+    			range[1] = (Float) attributeTupleMap.get(convertedMapKey).get(position[1]).get(attributeNumber);
+    			System.out.println("A position (range converted) " + Arrays.toString(range));
+    			rangeList.add(range);
+    		}
+    		attributeRangeList.add(rangeList);
     	}
     	
+		System.out.println("New key: " + attributeNumberList + " & new range : " + attributeRangeList);
+		// for 1st iteration
+		// call appendToMap
+		if (attributeNumberList.size() <= 1) {
+			appendToMap(attributeRangeList, attributeNumberList);
+		}
+    }
+    
+    private void appendToMap(LinkedList<LinkedList<Float[]>> attributeRangeList, LinkedList<Integer> attributeNumberList) {
+    	
+    	// append tuple map first 
+    	// since we need key from old range map
+    	
+    	for (LinkedList<Float[]> rangeList : attributeRangeList) {
+    		
+    		LinkedList<LinkedList> attributeTupleList = new LinkedList<>();
+    		
+    		// convert key from range map
+    		LinkedList<LinkedList<Float[]>> convertedMapKey = new LinkedList<>(attributeRangeMap.get(attributeNumberList));
+    		
+    		attributeTupleMap.get(convertedMapKey).stream().forEach(tuple -> {
+    			Float[] range = rangeList.getFirst();
+    			
+    			if (range[0] <= (float) tuple.get(attributeNumberList.getFirst()) && (float) tuple.get(attributeNumberList.getFirst()) <= range[1]) {
+    				attributeTupleList.add(tuple);
+    			}
+    		});
+    		
+    		// convert key for tuple map
+    		LinkedList<LinkedList<Float[]>> attributeRangeList2 = new LinkedList<>();
+    		attributeRangeList2.add(rangeList);
+    		System.out.println("append new range to tuple map");
+    		System.out.println("new key : " + attributeRangeList2);
+    		attributeTupleMap.put(attributeRangeList2, attributeTupleList);
+    	}
+
+    	// append range map
+    	attributeRangeMap.put(attributeNumberList, attributeRangeList);
     }
     
     protected LinkedList<LinkedList<Float[]>> getAttributeRangeList() {
