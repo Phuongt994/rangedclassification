@@ -51,44 +51,47 @@ public class Generator {
     	
     	// NEED different way to check null
     	// may move null checker to combined method 
-    	for (int i = 0; i < rangeMapKeySet.size(); i++) {
-
-    		Object key1 = rangeMapKeySet.getFirst();
-
-    		System.out.println("Attribute number " + (LinkedList<Integer>) key1 + " is being processed");
-
-    		rangeMapKeySet.remove(key1);
-
-    		System.out.println("keySet after key " + (LinkedList<Integer>) key1 + " is removed");
-
-    		for (Object postKey : rangeMapKeySet) {
-    			System.out.print((LinkedList<Integer>) postKey);
-    		}  		
-
-    		System.out.println("All ranges in range 1 : " + attributeRangeMap.get(key1));
-
-    		// skip null ranges
-    		if (attributeRangeMap.get(key1).isEmpty()) {
-    			System.out.println("Range1 is null - skipped");
-    			continue;
-
-    		} else {
-
-    			for (int j = 0; j < rangeMapKeySet.size(); j++) {
-    				
-    				Object key2 = rangeMapKeySet.get(j);
-    				System.out.println("ALl ranges in range 2 : " + attributeRangeMap.get(key2));
-
-    				// skip null ranges
-    				if (attributeRangeMap.get(key2).isEmpty()) {
-    					System.out.println("Range2 is null - skipped");
-    					continue;
-    				}
-
-    				LinkedList<LinkedList<Integer>> aCombinedKey = setACombinedKey(key1, key2);
-    				setACombinedRange(aCombinedKey);	
-    			}
-    		}
+    	// keep pairing until no pair left (size = 1)
+    	while (rangeMapKeySet.size() > 1) {
+    		
+	    	for (int i = 0; i < rangeMapKeySet.size(); i++) {
+	
+	    		Object key1 = rangeMapKeySet.getFirst();
+	
+	    		System.out.println("Attribute number " + (LinkedList<Integer>) key1 + " is being processed");
+	
+	    		rangeMapKeySet.remove(key1);
+	
+	    		System.out.println("keySet after key " + (LinkedList<Integer>) key1 + " is removed");
+	
+	    		for (Object postKey : rangeMapKeySet) {
+	    			System.out.print((LinkedList<Integer>) postKey);
+	    		}  		
+	
+	    		System.out.println("All ranges in range 1 : " + attributeRangeMap.get(key1));
+	
+	    		// skip null ranges
+	    		if (attributeRangeMap.get(key1).isEmpty()) {
+	    			System.out.println("Range1 is null - skipped");
+	    			continue;
+	    			
+	    		} else {
+	
+	    			for (int j = 0; j < rangeMapKeySet.size(); j++) {
+	    				
+	    				Object key2 = rangeMapKeySet.get(j);
+	
+	    				// skip null ranges
+	    				if (attributeRangeMap.get(key2).isEmpty()) {
+	    					System.out.println("Range2 is null - skipped");
+	    					continue;
+	    				} else {
+		    				LinkedList<LinkedList<Integer>> aCombinedKey = setACombinedKey(key1, key2);
+		    				setACombinedRange(aCombinedKey);	
+	    				}
+	    			}
+	    		}
+	    	}
     	}
     }
     
