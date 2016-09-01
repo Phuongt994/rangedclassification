@@ -49,7 +49,7 @@ public class Scanners {
                 allTuple.get(i).addFirst(i);
                 allClass.add(allTuple.get(i).getLast().toString());
                 // change string attribute values to float
-                for (int j = 1; j < aTuple.size(); j++) {
+                for (int j = 1; j < allTuple.getFirst().size() - 1; j++) {
                     allTuple.get(i).set(j, Float.parseFloat(allTuple.get(i).get(j).toString()));
                 }
             }

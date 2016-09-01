@@ -28,7 +28,7 @@ public class Starter {
         System.out.println("Used memory is " + memory + " in bytes");
         long kiloByte = 1024L;
         long memoryInKB = memory / kiloByte;
-        System.out.println("Used memory is " + memoryInKB + "in kilobytes");
+        System.out.println("Used memory is " + memoryInKB + " in kilobytes");
       }
     
 }
