@@ -52,7 +52,7 @@ public class Generator {
     	// NEED different way to check null
     	// may move null checker to combined method 
     	// keep pairing until no pair left (size = 1)
-    	while (rangeMapKeySet.size() > 1) {
+    	while (rangeMapKeySet.size() >= 1) {
     		
 	    	for (int i = 0; i < rangeMapKeySet.size(); i++) {
 	
@@ -87,12 +87,16 @@ public class Generator {
 	    					continue;
 	    				} else {
 		    				LinkedList<LinkedList<Integer>> aCombinedKey = setACombinedKey(key1, key2);
-		    				setACombinedRange(aCombinedKey);	
+		    				if (!aCombinedKey.isEmpty()) {
+		    					setACombinedRange(aCombinedKey);
+		    				}
 	    				}
 	    			}
 	    		}
 	    	}
     	}
+    	
+    	System.out.println("No key left");
     }
     
     private LinkedList<LinkedList<Integer>> setACombinedKey(Object key1, Object key2) {
@@ -167,7 +171,7 @@ public class Generator {
     		LinkedList<Integer> attributeNumberList = new LinkedList<>((LinkedList<Integer>) key);
     		for (int i = 0; i < attributeNumberList.size(); i++) {
     			System.out.println("Attribute " + attributeNumberList.get(i) + " has range");
-    			System.out.println(Arrays.toString(newAttributeRangeMap.get(key).get(i).get(0)));
+    			System.out.println(Arrays.toString(newAttributeRangeMap.get(key).get(0).get(i)));
     		}
     	}
     	
