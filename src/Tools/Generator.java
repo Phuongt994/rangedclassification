@@ -141,16 +141,19 @@ public class Generator {
     }
     
     private void analyseNewCombination(LinkedList<LinkedList<Integer>> aCombinedKey, LinkedList<LinkedList<LinkedList<Float[]>>> aCombinedRange) {
-    	Analyser2 analyser = new Analyser2(null, null, classTag, aCombinedKey, aCombinedRange, (LinkedHashMap) attributeRangeMap.clone(), (LinkedHashMap) attributeTupleMap.clone());
+    	Analyser2 analyser2 = new Analyser2(null, null, classTag, aCombinedKey, aCombinedRange, (LinkedHashMap) attributeRangeMap.clone(), (LinkedHashMap) attributeTupleMap.clone());
     	
-    	if (analyser.getNewCombinedRange() != null) {
+    	Analyser1 analyser1 = new Analyser1(null, null);
+    	analyser1.densityCheck(classTag, analyser2.getNewCombinedTupleSet(), analyser2.getNewMutualTupleList(), aCombinedKey, aCombinedRange);
+    	
+    	if (analyser1.getNewCombinedRange() != null) {
     		
     		// append new combination to 2 maps
-    		LinkedList<LinkedList<Float[]>> newCombinedRange = new LinkedList<>(analyser.getNewCombinedRange());
+    		LinkedList<LinkedList<Float[]>> newCombinedRange = new LinkedList<>(analyser1.getNewCombinedRange());
 
-			LinkedList<Integer> newCombinedKey = new LinkedList<>(analyser.getNewCombinedKey());
+			LinkedList<Integer> newCombinedKey = new LinkedList<>(analyser1.getNewCombinedKey());
 			
-			LinkedList<LinkedList> newMutualTupleList = new LinkedList<>(analyser.getNewMutualTupleList());
+			LinkedList<LinkedList> newMutualTupleList = new LinkedList<>(analyser1.getNewMutualTupleList());
 			
 			System.out.println("New combined range for " + newCombinedKey + " is " + newCombinedRange);
 			newAttributeRangeMap.put(newCombinedKey, newCombinedRange);
@@ -174,6 +177,8 @@ public class Generator {
     			System.out.println(Arrays.toString(newAttributeRangeMap.get(key).get(0).get(i)));
     		}
     	}
-    	
     }
+    
+    
+    
 }
