@@ -1,4 +1,4 @@
-import Tools.Scanners;
+import tools.Scanners;
 
 /**
  * Created by phuongt994 on 17/06/2016.
