@@ -1,0 +1,22 @@
+
+If  
+	attribute 2 is within range [1.59, 1.63]  
+	attribute 6 is within range [3.0, 3.3]  
+	attribute 7 is within range [3.17, 3.93]  
+	attribute 10 is within range [5.65, 8.7]  
+	attribute 13 is within range [780.0, 1680.0]  
+..then it belongs to class 1
+The accuracy for this rule is : 1.0 
+
+If  
+	attribute 10 is within range [2.5, 3.35]  
+	attribute 13 is within range [278.0, 985.0]  
+..then it belongs to class 2
+The accuracy for this rule is : 1.0 
+
+If  
+	attribute 7 is within range [0.47, 0.5]  
+	attribute 11 is within range [0.7, 0.75]  
+	attribute 12 is within range [1.27, 2.47]  
+..then it belongs to class 3
+The accuracy for this rule is : 1.0 

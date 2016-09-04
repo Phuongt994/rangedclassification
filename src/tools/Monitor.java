@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -14,6 +15,7 @@ public class Monitor {
 	private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
 	private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
 	private String ruleSet;
+	private LinkedList<LinkedList> coveredTupleList;
 	
 	public Monitor (String classTag, LinkedList<LinkedList> allTuple, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
 		this.classTag = classTag;
@@ -27,12 +29,12 @@ public class Monitor {
 	private void evaluateRule() {
 		ruleSet = new String();
 		
+		coveredTupleList = new LinkedList<>(allTuple);
+		
 		// Confusion matrix used
     	System.out.println("\nFinal attributeRangeMap for class : " + classTag + " is " + attributeRangeMap);
     	// System.out.println("Final attributeTupleMap for class : " + classTag + " is " + attributeTupleMap); // not necessary? 
     	System.out.println("Classification rule for class " + classTag);
-    	
-    	LinkedList<LinkedList> coveredTupleList = new LinkedList<>(allTuple);
     	
     	for (Object key : attributeRangeMap.keySet()) {
     		
@@ -57,15 +59,19 @@ public class Monitor {
     			String aRule = " \n\tattribute " + (Integer.toString(attributeNumber)) + " is within range " + Arrays.toString(range) + " ";
     			ruleSet = ruleSet + aRule;
     			
-    			for (int j = 0; j < coveredTupleList.size(); j++) {
-    				if (range[0] <= (Float) coveredTupleList.get(j).get(attributeNumber) && (Float) coveredTupleList.get(j).get(attributeNumber) <= range[1]) {
-    					continue;
-    				} else {
-    					coveredTupleList.remove(coveredTupleList.get(j));
-    				}
+    			Iterator<LinkedList> iterator = coveredTupleList.iterator();
+
+    			while (iterator.hasNext()) {
+    			    LinkedList tuple = iterator.next();
+    			    
+    			    if (range[0] > (Float) tuple.get(attributeNumber) || (Float) tuple.get(attributeNumber) > range[1]) {
+    			        iterator.remove();
+    			    }
     			}
     		}
     	}
+    	
+    	System.out.println(coveredTupleList);
 	
     	// check accuracy
     	int accuracyCount = 0;
