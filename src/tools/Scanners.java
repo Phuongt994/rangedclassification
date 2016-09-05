@@ -8,9 +8,7 @@ import java.util.*;
  * Created by phuongt994 on 17/06/2016.
  */
 public class Scanners {
-	private LinkedList<String> aTuple;
     private LinkedList<LinkedList> allTuple;
-    private HashSet<String> allClass;
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
 
 
@@ -24,7 +22,7 @@ public class Scanners {
 
         // initialise aTuple list and class set
         allTuple = new LinkedList<>();
-        allClass = new HashSet<>();
+        HashSet<String> allClass = new HashSet<>();
 
         // scanner to read data
         // read each line
@@ -37,7 +35,7 @@ public class Scanners {
                 String str = scanner1.nextLine();
                 Scanner scanner2 = new Scanner(str);
                 scanner2.useDelimiter(",");
-                aTuple = new LinkedList<>();
+                LinkedList<String> aTuple = new LinkedList<>();
                 while (scanner2.hasNext()) {
                     aTuple.add(scanner2.next());
                 }
@@ -54,9 +52,7 @@ public class Scanners {
                 }
             }
            
-            sortData();
-
-            reportScan();
+            sortData(allClass);
             
             // Pass tuples and hashmap to Analyser
             Analyser analyser = new Analyser(allTuple, allClassMap);
@@ -68,7 +64,7 @@ public class Scanners {
         }  
     }
 
-    private void sortData() {
+    private void sortData(HashSet<String> allClass) {
         // make a HashMap for class tags and (processed) tuples
         // initialise HashMap
         allClassMap = new HashMap<>();
@@ -91,12 +87,6 @@ public class Scanners {
                 allClassMap.put(k, temp);
             }
         });
-    }
-
-    private void reportScan() {
-        System.out.println("Scanner started \nTupleuple list ready: " + allTuple);
-        System.out.println("Class list ready: " + allClass);
-        System.out.println("Hashmap ready: " + allClassMap.entrySet());
     }
 
 }
