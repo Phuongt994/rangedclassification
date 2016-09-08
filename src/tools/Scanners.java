@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-/**
- * Created by phuongt994 on 17/06/2016.
- */
 public class Scanners {
     private LinkedList<LinkedList> allTuple;
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
@@ -25,10 +22,7 @@ public class Scanners {
         HashSet<String> allClass = new HashSet<>();
 
         // scanner to read data
-        // read each line
         // use delimiter to separate items and append to a tuple
-        // add each tuple to the tuple list
-        // tuple list can now retrieve many sublists of tuples where elements in each tuple can be queried
         try {
             Scanner scanner1 = new Scanner(new File(dataDirectory));
             while (scanner1.hasNext()) {
@@ -66,7 +60,6 @@ public class Scanners {
 
     private void sortData(HashSet<String> allClass) {
         // make a HashMap for class tags and (processed) tuples
-        // initialise HashMap
         allClassMap = new HashMap<>();
 
         allClass.stream().forEach(c -> {
@@ -76,14 +69,16 @@ public class Scanners {
         // for each class as key in Map
         allClassMap.keySet().stream().forEach(k -> {
             LinkedList temp = new LinkedList<LinkedList>();
+            
             // for each tuple
             for (int i = 0; i < allTuple.size(); i++) {
+            	
                 // if tuple's class == class name
                 // add to temp tuple list
                 if (allTuple.get(i).getLast().equals(k)) {
                     temp.add(allTuple.get(i));
                 }
-                // append temp list to relevant class key in Map
+                
                 allClassMap.put(k, temp);
             }
         });

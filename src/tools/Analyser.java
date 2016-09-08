@@ -3,9 +3,6 @@ package tools;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by phuongt994 on 28/06/2016.
- */
 public class Analyser {
 	
     private HashMap<String, LinkedList<LinkedList>> allClassMap;
@@ -74,12 +71,7 @@ public class Analyser {
         });
     }
     
-    /***
-     * Do we need RangeMap?
-     * This only has effects in 1st round
-     * @param attributeRangeMap
-     * @param attributeTupleMap
-     */
+    
     protected void convertToBinary(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
 
     	for (Object key : attributeRangeMap.keySet()) {
@@ -106,10 +98,7 @@ public class Analyser {
     	}
     }
 
-    /**
-     * Original method from Kadane's algorithm
-     * @param biList a list of 1 or -1 for max sum calculation
-     */
+
     protected void maxSum(LinkedList<Integer> attributeNumberList, LinkedList<Integer> binaryList, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
     	
         int currentMax = 0;
@@ -182,10 +171,6 @@ public class Analyser {
     	for (int[] position : attributeCheckedPosition) {
 
     		// convert position to numerical equivalence
-    		// convert values
-    		// get key of rangeMap to get its value
-    		// use this value as key to tupleMap to retrieve its value
-    		// use retrieved tuple value to convert position to range
 
     		LinkedList<LinkedList<Float[]>> convertedMapKey = attributeRangeMap.get(attributeNumberList);
     		
@@ -210,7 +195,6 @@ public class Analyser {
     private void appendToMap(LinkedList<LinkedList<Float[]>> attributeRangeList, LinkedList<Integer> attributeNumberList) {
     	
     	// append tuple map first 
-    	// since we need key from old range map
     	
     	for (LinkedList<Float[]> rangeList : attributeRangeList) {
     		
