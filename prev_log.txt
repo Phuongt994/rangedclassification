@@ -1,0 +1,79 @@
+25.06.16
+
+1) Refactor all into 2 main Packages:
+
+- Elements: contain items
+    Classes: Attributes, Classes
+- Tools: contain methods
+    Classes: Analyser, DScanner
+
+Starter as Main()
+
+
+2) Current progress to analysing ranges:
+
+- Starter initialised, which initialises (tool) DScanner
+- DScanner initialised, which initialises (elements) Attributes & Classes
+- DScanner invokes (methods) MaxMin, MaxSum, MinThresh
+
+-------------------------------------------------------------------------
+
+26.06.16
+
+1) Refactor:
+- Scrap Elements classes
+- DScanner kept ONLY for scanning, Analyser kept ONLY for analysing
+
+
+2) Current progress to analysing ranges:
+- Starter initialised, which initialises (tool) DScanner
+- DScanner initialised, which initialises (tool) Analyser
+- Analyser initialised, which invokes (method) minMax & maxSum & minThresh and (tool) Generator (IN PROGRESS)
+
+-------------------------------------------------------------------------
+
+28.06.16
+1) Refactor:
+- Now 3 classes up: Scanners -> Sorter -> Analyser
+
+2) Current progress to analysing ranges:
+- Starter initialised, which initialises (tool) Scanners
+- Scanners initialised, which scans in tuples and mark them with class tags, pass both into newly initialised (tool) Sorter
+- Sorter initialised, which processes tuples with class tags into hashmap, pass hashmap onto newly intialised (tool) Analyser
+- Analyser initialised, which processes each tuples under maxMin() and maxSum() method (IN PROGRESS)
+
+3) Stuck-point:
+- Hashmap when passed as param could not return value and key as specified classes (String and List) but instead 'objects' (Object)
+--> EntrySet?
+
+-------------------------------------------------------------------------
+
+04.07.16
+1) Refactor:
+- Now 2 classes only: Scanners (merged with Sorter) -> Analyser
+- Reason: to have sorted data ready for analysis asap
+
+2) Current progress to analysing ranges:
+- MaxMin() has worked, however MaxSum() worked but need a copy of tuple list in order not to ruin original data
+
+3) Stuck-point
+- MaxSum() currently iterates through original HashMap and changes original data, which prevents new iteration from
+using the original values
+--> Need a copy of HashMap/LinkedList of original tuples with their ranges
+
+
+-------------------------------------------------------------------------
+
+13.07.16
+1) Refactor:
+- new Generator (empty)
+
+2) Current progress to analysing ranges
+- maxSum() works only in 1 iteration
+---> recursive loop?
+---> rule: start with positive and contains only 40% negative?
+
+3) Stuck-point
+- Recursive loop may only start as second loop
+- Control support from loop -> minThresh() only checks density? How to check density?
+
