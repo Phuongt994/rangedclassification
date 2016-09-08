@@ -23,10 +23,6 @@ public class Generator {
         this.attributeRangeMap = attributeRangeMap;
         this.attributeTupleMap = attributeTupleMap;
         
-        System.out.println("Generator started for " + this.classTag);
-        System.out.println("attributeRangeMap :" + this.attributeRangeMap);
-        System.out.println("attributeTupleMap :" + this.attributeTupleMap);
-        
     	newAttributeRangeMap = new LinkedHashMap<>();
     	newAttributeTupleMap = new LinkedHashMap<>();
     			
@@ -37,22 +33,16 @@ public class Generator {
         // if not, finalise rule
         
         if (newAttributeRangeMap.keySet().size() > 1 ) {
-        	System.out.println("Continue for next loop");
         	new Generator(this.classTag, allTuple, newAttributeRangeMap, newAttributeTupleMap);  
         } else {
-        	System.out.println("No possible pair - loop ends");
         	finaliseRule(newAttributeRangeMap, newAttributeTupleMap);
         }
     } 
 
     private void aPriori() {
 
-    	System.out.println("Apriori started");
-       
     	LinkedList rangeMapKeySet = new LinkedList<Object>(attributeRangeMap.keySet());
     	
-    	// NEED different way to check null
-    	// may move null checker to combined method 
     	// keep pairing until no pair left (size = 1)
     	while (rangeMapKeySet.size() >= 1) {
     		
@@ -60,21 +50,11 @@ public class Generator {
 	
 	    		Object key1 = rangeMapKeySet.getFirst();
 	
-	    		System.out.println("Attribute number " + (LinkedList<Integer>) key1 + " is being processed");
 	
 	    		rangeMapKeySet.remove(key1);
 	
-	    		System.out.println("keySet after key " + (LinkedList<Integer>) key1 + " is removed");
-	
-	    		for (Object postKey : rangeMapKeySet) {
-	    			System.out.print((LinkedList<Integer>) postKey);
-	    		}  		
-	
-	    		System.out.println("All ranges in range 1 : " + attributeRangeMap.get(key1));
-	
 	    		// skip null ranges
 	    		if (attributeRangeMap.get(key1).isEmpty()) {
-	    			System.out.println("Range1 is null - skipped");
 	    			continue;
 	    			
 	    		} else {
@@ -85,7 +65,6 @@ public class Generator {
 	
 	    				// skip null ranges
 	    				if (attributeRangeMap.get(key2).isEmpty()) {
-	    					System.out.println("Range2 is null - skipped");
 	    					continue;
 	    				} else {
 		    				LinkedList<LinkedList<Integer>> aCombinedKey = setACombinedKey(key1, key2);
@@ -97,8 +76,6 @@ public class Generator {
 	    		}
 	    	}
     	}
-    	
-    	System.out.println("No key left");
     }
     
     private LinkedList<LinkedList<Integer>> setACombinedKey(Object key1, Object key2) {
@@ -134,9 +111,6 @@ public class Generator {
 				aCombinedRange.add(range1List);
 				aCombinedRange.add(range2List);
 				
-				System.out.println("A combined key : " + aCombinedKey);
-				System.out.println("A combined range : " + aCombinedRange);
-				
 				analyseNewCombination(aCombinedKey, aCombinedRange);
 			}
 		}
@@ -154,19 +128,12 @@ public class Generator {
 			
 			LinkedList<LinkedList> newMutualTupleList = new LinkedList<>(subAnalyser.getNewMutualTupleList());
 			
-			System.out.println("New combined range for " + newCombinedKey + " is " + newCombinedRange);
 			newAttributeRangeMap.put(newCombinedKey, newCombinedRange);
-			System.out.println("Tuple under this range : " + newMutualTupleList);
 			newAttributeTupleMap.put(newCombinedRange, newMutualTupleList);
-		} else {
-			System.out.println("No range found");
-		}
+		} 
     }
     
     private void finaliseRule(LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> newAttributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> newAttributeTupleMap) {
-    	System.out.println("----------------");
-    	System.out.println("End of loop");
-    	System.out.println("Rule sent to Monitor");
     	
     	new Monitor(classTag, allTuple, newAttributeRangeMap, newAttributeTupleMap);	
     }

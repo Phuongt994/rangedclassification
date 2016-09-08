@@ -26,12 +26,11 @@ public class SubAnalyser extends Analyser {
 		this.attributeRangeMap = attributeRangeMap;
 		this.attributeTupleMap = attributeTupleMap;
 		
-		preset();
+		strictAdjust();
 	}
 
-	private void preset() {
-		// move null tuple check to here
-		//
+	private void strictAdjust() {
+		// eliminate tuples instead of turning null
 		
 		LinkedHashSet<LinkedList> aCombinedTupleSet = new LinkedHashSet<>();
 		aMutualTupleList = new LinkedList<>();
@@ -53,16 +52,15 @@ public class SubAnalyser extends Analyser {
 			}
 		}
 		
-	densityCheck(aCombinedTupleSet, aMutualTupleList);
+	checkDensity(aCombinedTupleSet, aMutualTupleList);
 	
 	}
 
-	private void densityCheck(LinkedHashSet<LinkedList> aCombinedTupleSet, LinkedList<LinkedList> aMutualTupleList) {
+	private void checkDensity(LinkedHashSet<LinkedList> aCombinedTupleSet, LinkedList<LinkedList> aMutualTupleList) {
 		
 		Float density = (float) aMutualTupleList.size() / aCombinedTupleSet.size();
 		
-		if (density >= 0.2) {
-			System.out.println("Density accepted");
+		if (density >= 0.4) {
 			if (aCombinedKey.get(0).size() < 2) {
 				// prepare new combined key
 				newCombinedKey = new LinkedList<>();
@@ -89,19 +87,13 @@ public class SubAnalyser extends Analyser {
 			attributeTupleMap.clear();
 			attributeRangeMap.put(newCombinedKey, newCombinedRange);
 			attributeTupleMap.put(newCombinedRange, aMutualTupleList);
-			
-			System.out.println(attributeRangeMap);
-			System.out.println(attributeTupleMap);
+		
 			
 			// proceed to binaryConvert()
-			binaryConvert(classTag, attributeRangeMap, attributeTupleMap);
+			convertToBinary(classTag, attributeRangeMap, attributeTupleMap);
 			
 			// after all is done
 			newCombinedRange = new LinkedList<>(getAttributeRangeList());
-			System.out.println(newCombinedRange);
-			
-		} else {
-			System.out.println("Density rejected");
 		}
 	}
 	

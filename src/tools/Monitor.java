@@ -30,11 +30,6 @@ public class Monitor {
 		ruleSet = new String();
 		
 		coveredTupleList = new LinkedList<>(allTuple);
-		
-		// Confusion matrix used
-    	System.out.println("\nFinal attributeRangeMap for class : " + classTag + " is " + attributeRangeMap);
-    	// System.out.println("Final attributeTupleMap for class : " + classTag + " is " + attributeTupleMap); // not necessary? 
-    	System.out.println("Classification rule for class " + classTag);
     	
     	for (Object key : attributeRangeMap.keySet()) {
     		
@@ -46,8 +41,7 @@ public class Monitor {
     			System.out.println("Attribute " + attributeNumber + " has range");
     			Float[] range = attributeRangeMap.get(key).get(0).get(i);
     			
-    			// mini-swap 
-    			// testing
+    			// swap ranges in case [a,b] where b > a
     			if (range[0] > range[1]) {
     				Float temp = range[0];
     				range[0] = range[1];
@@ -70,28 +64,14 @@ public class Monitor {
     			}
     		}
     	}
-    	
-    	System.out.println(coveredTupleList);
 	
-    	// check accuracy
-    	int accuracyCount = 0;
-    	for (int k = 0; k < coveredTupleList.size(); k++) {
-    		if ((coveredTupleList.get(k)).getLast().toString().equals(classTag)) {
-    			accuracyCount++;
-    		}
-    	}
-    	
-    	Float accuracy = (float) accuracyCount / coveredTupleList.size();
-    	
-    	outputRule(accuracy);
+    	outputRule();
 	}
 	
 	
-	private void outputRule(Float accuracy) {
-		System.out.println("Accuracy for above rule is : " + accuracy);
+	private void outputRule() {
 		// reformat rule string
 		String classifier = "\nIf " + ruleSet + " \n..then it belongs to class " + classTag;
-		String measures = "The accuracy for this rule is : " + accuracy.toString() + " \n";
 		
 		// write rules into a text file
 		 try {
@@ -105,10 +85,8 @@ public class Monitor {
 
 	    		FileWriter fileWritter = new FileWriter(file.getName(),true);
 	    	        BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-	    	        bufferWritter.write(classifier + "\n" + measures);
+	    	        bufferWritter.write(classifier);
 	    	        bufferWritter.close();
-
-		        System.out.println("Done");
 
 		 } catch(IOException e) {
 			 e.printStackTrace();
