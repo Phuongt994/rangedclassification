@@ -15,7 +15,7 @@ Report from other repo (link: https://github.com/Phuongt994/rangedclassification
 HOW TO RUN:
 - Redirect the programme to appropriate dataset 
 
-Open Scanners and replace dataDirectory = "yourdataset.csv" (line 21)
+Open Scanners and replace dataDirectory = "yourdataset.csv" 
 
 - Specify threshold for support confidence and density check
 
