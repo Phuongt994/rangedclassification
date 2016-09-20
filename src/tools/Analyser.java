@@ -5,35 +5,36 @@ import java.util.stream.Collectors;
 
 public class Analyser {
 	
-    private HashMap<String, LinkedList<LinkedList>> allClassMap;
-    private LinkedList<LinkedList> allTuple;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
-    private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
     private LinkedList<LinkedList<Float[]>> attributeRangeList;
 
-    public Analyser(LinkedList<LinkedList> allTuple, HashMap<String, LinkedList<LinkedList>> allClassMap) {
-        this.allTuple = allTuple;
-        this.allClassMap = allClassMap;
+    public Analyser() {
     }
     
-    protected void maxMin(HashMap<String, LinkedList<LinkedList>> allClassMap) {
+    /***
+     * Get max-min range r(a) for each attribute (a)
+     * RangeMap <- r(a)
+     */
+    protected void maxMin() {
     	
-    	this.allClassMap = allClassMap;
-        this.allClassMap.keySet().forEach(k -> {
+    	// for each class
+        Scanners.allClassMap.keySet().forEach(k -> {
             String classTag = k;
             
+            // one rangeMap for each class
             attributeRangeMap = new LinkedHashMap<>();
-            attributeTupleMap = new LinkedHashMap<>();
 
             // for each attribute
-            for (int i = 1; i < allClassMap.get(k).get(0).size() - 1; i++) {
+            for (int i = 1; i < Scanners.allClassMap.get(k).get(0).size() - 1; i++) {
             	
-            	LinkedList<Integer> attributeNumberList = new LinkedList<>();
             	int attributeNumber = i;
+               	LinkedList<Integer> attributeNumberList = new LinkedList<>();
             	attributeNumberList.add(attributeNumber);
+
             	
+            	// find max-min range for each attribute
                 LinkedList<Float> attributeValue = new LinkedList<>();
-                allClassMap.get(k).stream().forEach(t -> {
+                Scanners.allClassMap.get(k).stream().forEach(t -> {
                     attributeValue.add((Float) t.get(attributeNumber));
                 });
 
@@ -42,60 +43,64 @@ public class Analyser {
                 Float[] attributeRange = new Float[2];
                 attributeRange[0] = attributeValue.getFirst();
                 attributeRange[1] = attributeValue.getLast();
-                LinkedList<Float[]> attributeRangeList = new LinkedList<>();
-                attributeRangeList.add(attributeRange);
-                
+                LinkedList<Float[]> attributeRangeL = new LinkedList<>();
+                attributeRangeL.add(attributeRange);
+				// linkedlist conversion for min-max range to fit class type
+                LinkedList<LinkedList<Float[]>> attributeRangeList = new LinkedList<>();
+                attributeRangeList.add(attributeRangeL);
 
-                LinkedList attributeRangeTupleList = new LinkedList<LinkedList>();
-                allTuple.stream().forEach(t -> {
-                    if (attributeRange[0] <= (Float) t.get(attributeNumber) && (Float) t.get(attributeNumber) <= attributeRange[1]) {
-                        attributeRangeTupleList.add(t);
-                    }
-                });
-                
-                Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
-				attributeRangeTupleList.sort(comp);
 				
                 // append attributeRangeMap
-				// convert rangelist to rangelist-list to fit class type
-                LinkedList<LinkedList<Float[]>> attributeRangeList2 = new LinkedList<>();
-                attributeRangeList2.add(attributeRangeList);
-                attributeRangeMap.put(attributeNumberList, attributeRangeList2);
-                // append attributeTupleMap
-                attributeTupleMap.put(attributeRangeList2, attributeRangeTupleList);
+                attributeRangeMap.put(attributeNumberList, attributeRangeList);
             }
             
-            convertToBinary(classTag, attributeRangeMap, attributeTupleMap);
+             convertToBinary(classTag, attributeRangeMap);
                 
-            new Generator(classTag, allTuple, attributeRangeMap, attributeTupleMap);
+            //new Generator(classTag, allTuple, attributeRangeMap, attributeTupleMap);
         });
     }
     
     
-    protected void convertToBinary(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
+     protected void convertToBinary(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap) {
+    	 
+    	 // for each attribute
+    	 for (Object key : attributeRangeMap.keySet()) {
+    		 LinkedList<Integer> keyList = ((LinkedList<Integer>) key);
 
-    	for (Object key : attributeRangeMap.keySet()) {
+    		 LinkedList<LinkedList<Float[]>> rangeList = new LinkedList<>(attributeRangeMap.get(key));
 
-    		LinkedList<Integer> attributeNumberList = (LinkedList<Integer>) key;
+    		 // create a binary list
+    		 LinkedList<Integer> binaryList = new LinkedList<>();
+    		 
+    		 // find sub-tuples under indicated range
+    		 // get attribute number and range first
+             LinkedList attributeRangeTupleList = new LinkedList<LinkedList>();
+             LinkedList<Float[]> rangeL = rangeList.getFirst();
+             Float[] range = rangeL.getFirst();
+             
+             
+             Scanners.allTuple.stream().forEach(t -> {
+                 if (range[0] <= (Float) t.get(keyList.getFirst()) && (Float) t.get(keyList.getFirst()) <= range[1]) {
+                     attributeRangeTupleList.add(t);
+                 }
+             });
+             
+             Comparator<LinkedList> comp = (a, b)-> ((Float) a.get(attributeNumber)).compareTo((Float) b.get(attributeNumber));
+			 attributeRangeTupleList.sort(comp);
+				
+			// IN PROGRESS FROM HERE 
+    		 attributeTupleMap.get(rangeList).stream().forEach(tuple -> {
+    			 // append 1 and -1 into an array for max sum solution
+    			 if (tuple.getLast().equals(classTag)) {
+    				 binaryList.add(1);
+    			 } else {
+    				 binaryList.add(-1);
+    			 }
+    		 });
 
-    		// for each range of attribute
+    		 maxSum(attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
+    	 }
 
-    		LinkedList<LinkedList<Float[]>> rangeList = new LinkedList<>(attributeRangeMap.get(key));
-
-    		// create a temp binary list
-    		LinkedList<Integer> binaryList = new LinkedList<>();
-    		attributeTupleMap.get(rangeList).stream().forEach(tuple -> {
-    			// append 1 and -1 into an array for max sum solution
-    			if (tuple.getLast().equals(classTag)) {
-    				binaryList.add(1);
-    			} else {
-    				binaryList.add(-1);
-    			}
-    		});
-
-    		maxSum(attributeNumberList, binaryList, attributeRangeMap, attributeTupleMap);
-
-    	}
     }
 
 

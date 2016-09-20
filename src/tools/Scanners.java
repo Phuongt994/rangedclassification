@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Scanners {
-    private LinkedList<LinkedList> allTuple;
-    private HashMap<String, LinkedList<LinkedList>> allClassMap;
+    public static LinkedList<LinkedList> allTuple;
+    public static HashMap<String, LinkedList<LinkedList>> allClassMap;
 
 
     public Scanners() {
@@ -49,8 +49,8 @@ public class Scanners {
             sortData(allClass);
             
             // Pass tuples and hashmap to Analyser
-            Analyser analyser = new Analyser(allTuple, allClassMap);
-            analyser.maxMin(allClassMap);
+            Analyser analyser = new Analyser();
+            analyser.maxMin();
             
         }
         catch (FileNotFoundException fe) {
