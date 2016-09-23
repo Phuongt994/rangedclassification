@@ -48,6 +48,8 @@ public class Scanners {
            
             sortData(allClass);
             
+            System.out.println("Scanners return :" + allClassMap);
+            System.out.println("All classes : " + allClassMap.keySet());
             // Pass tuples and hashmap to Analyser
             Analyser analyser = new Analyser();
             analyser.maxMin();
