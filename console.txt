@@ -129,7 +129,7 @@ attributePosition post-maxsum [[I@4ac68d3e, [I@277c0f21, [I@6073f712, [I@4355693
 All positions (checked) : []
 post-analysis: 
 [[1]=[], [2]=[], [3]=[], [4]=[], [5]=[], [6]=[[[Ljava.lang.Float;@5f205aa]], [7]=[[[Ljava.lang.Float;@6d86b085]], [8]=[], [9]=[[[Ljava.lang.Float;@75828a0f]], [10]=[], [11]=[[[Ljava.lang.Float;@3abfe836]], [12]=[[[Ljava.lang.Float;@2ff5659e]], [13]=[]]
-Execution time : 481 milliseconds.
+Execution time : 547 milliseconds.
 Execution time : 0 seconds.
-Used memory is 836912 in bytes
+Used memory is 836840 in bytes
 Used memory is 817 in kilobytes

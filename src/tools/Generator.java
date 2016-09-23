@@ -10,30 +10,26 @@ import java.util.LinkedList;
  * Created by Phuongt994 on 10/07/2016.
  */
 public class Generator {
-    private String classTag;
-    private LinkedList<LinkedList> allTuple;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap;
-    private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap;
     private LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> newAttributeRangeMap;
     private LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> newAttributeTupleMap;
 
-    public Generator(String classTag, LinkedList<LinkedList> allTuple, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap, LinkedHashMap<LinkedList<LinkedList<Float[]>>, LinkedList<LinkedList>> attributeTupleMap) {
-        this.classTag = classTag;
-        this.allTuple = allTuple;
+    public Generator(String classTag, LinkedHashMap<LinkedList<Integer>, LinkedList<LinkedList<Float[]>>> attributeRangeMap) {
+
         this.attributeRangeMap = attributeRangeMap;
-        this.attributeTupleMap = attributeTupleMap;
+
         
     	newAttributeRangeMap = new LinkedHashMap<>();
     	newAttributeTupleMap = new LinkedHashMap<>();
     			
         aPriori();     
         
-        // recursive call after 1 round done
+        // recursive call after 1 round done - IN PROGRESS                           
         // only if there is possible pair left
         // if not, finalise rule
         
         if (newAttributeRangeMap.keySet().size() > 1 ) {
-        	new Generator(this.classTag, allTuple, newAttributeRangeMap, newAttributeTupleMap);  
+        	// new Generator(this.classTag, allTuple, newAttributeRangeMap, newAttributeTupleMap);  
         } else {
         	finaliseRule(newAttributeRangeMap, newAttributeTupleMap);
         }
