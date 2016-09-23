@@ -56,10 +56,13 @@ public class Analyser {
 			 LinkedList attributeRangedTupleList = new LinkedList<LinkedList>();
 			 System.out.println("pre-analysis :\n" + attributeRangeMap.entrySet());
 			 
+			 // binary converter
              convertToBinary(classTag, attributeRangedTupleList, attributeRangeMap);
              
              System.out.println("post-analysis: \n" + attributeRangeMap.entrySet());
-            //new Generator(classTag, allTuple, attributeRangeMap, attributeTupleMap);
+             
+             // Generator class initialised
+             new Generator(classTag, attributeRangeMap);
         });
     }
     
